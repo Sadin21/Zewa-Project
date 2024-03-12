@@ -1,6 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CostumerPage\HomeController;
+use App\Http\Controllers\Dashboard\ManageUserController;
+use App\Http\Controllers\Dashboard\ManageProductController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -14,9 +19,34 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('pages.home.index');
+    return redirect(route('home.index'));
 });
 
-Route::get('/auth/signin', function () {
-    return view('pages.auth.index');
+// Route::get('/auth/signin', function () {
+//     return view('pages.auth.index');
+// });
+
+Route::controller(AuthController::class)->name('auth.')->prefix('auth')->group(function () {
+    Route::match(['get', 'post'], 'login', 'authenticate')->name('login');
+    Route::post('logout', 'logout')->name('logout');
+});
+
+Route::controller(HomeController::class)->name('home.')->prefix('home')->group(function () {
+    Route::get('/', 'index')->name('index');
+});
+
+Route::prefix('dashboard')->name('dashboard.')->group(function () {
+    Route::get('/', function () {
+        return redirect(route('dashboard.manage-user.index'));
+    });
+
+    Route::controller(ManageUserController::class)->name('manage-user.')->prefix('manage-user')->group(function () {
+        Route::get('/', 'index')->name('index');
+    });
+
+    Route::controller(ManageProductController::class)->name('manage-product.')->prefix('manage-product')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::match(['get', 'post'], 'create', 'create')->name('create');
+        Route::match(['get', 'post'], '{id}', 'update')->name('update');
+    });
 });

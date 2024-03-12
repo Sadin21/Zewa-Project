@@ -1,3 +1,9 @@
+* {
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
 .poppins-light {
     font-family: "Poppins", sans-serif;
     font-weight: 300;
@@ -60,4 +66,51 @@ ul.header {
 
 li.header-list {
     display: inline;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+/* .breadcrumb-item {
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+} */
+
+/* .breadcrumb-item a {
+    color: #184A4B !important;
+} */
+
+.breadcrumb-item.active {
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.img-selector::-webkit-file-upload-button {
+    visibility: hidden;
+}
+.img-selector {
+    content: '';
+    width: 140px;
+    outline: none;
+    display: flex;
+    cursor: pointer;
+    color: #DBDEE2;
+    aspect-ratio: 1/1;
+    border-radius: 8px;
+    align-items: center;
+    justify-content: center;
+    transition: all .3s ease;
+    -webkit-user-select: none;
+    user-select: none;
+    border: 1px dashed #DBDEE2;
+}
+.img-selector:hover {
+    color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+.img-selector ion-icon {
+    font-size: 32px;
 }

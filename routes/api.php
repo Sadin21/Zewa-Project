@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Dashboard\ManageProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,4 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::controller(ManageProductController::class)->name('product.')->prefix('product')->group(function () {
+    Route::get('/', 'getAllData')->name('getAllData');
+    Route::delete('delete/{id}', 'destroy')->name('delete');
 });
