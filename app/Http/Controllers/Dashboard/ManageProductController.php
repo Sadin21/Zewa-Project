@@ -39,7 +39,7 @@ class ManageProductController extends Controller
 
     public function create(Request $request): mixed
     {
-        $mode = 'store';
+        $mode = 'create';
         $categories = ProductCategory::get();
 
         if ($request->getMethod() === 'GET') {

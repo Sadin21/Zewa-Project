@@ -73,7 +73,7 @@
                                     <i class="fa-solid fa-plus"></i>
                                 </label>
                                 <div id="img-preview" style="width: 135px; height: 60px">
-                                    <img src="/assets/imgs/{{ isset($product) ? $product->foto : '' }}" class="img-fluid border border-2 border-primary rounded" alt="">
+                                    <img src="/assets/imgs/product/{{ isset($product) ? $product->foto : '' }}" class="img-fluid border border-2 border-primary rounded" alt="">
                                 </div>
                             </div>
                         </div>

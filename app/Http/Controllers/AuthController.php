@@ -8,13 +8,14 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
     public function authenticate(Request $request): View | RedirectResponse
     {
         if ($request->getMethod() === 'GET') {
-            return view('pages.auth.index');
+            return view('pages.auth.signin');
         }
 
         $credentials = $request->validate([
@@ -27,6 +28,36 @@ class AuthController extends Controller
             return redirect()->route('home.index')->with('success', 'Login success');
         } else {
             return redirect()->back()->with('error', 'Login gagal');
+        }
+    }
+
+    public function signup(Request $request): View | RedirectResponse
+    {
+        if ($request->getMethod() === 'GET') {
+            return view('pages.auth.signup');
+        }
+
+        try {
+            $input = $request->validate([
+                'nama' => 'required|string',
+                'email' => 'required|email|unique:users,email',
+                'password' => 'required',
+            ]);
+
+            // dd($input);
+
+            $user = new User();
+            $user->nama = $request->input('nama');
+            $user->email = $request->input('email');
+            $user->role_id = '3';
+            $user->password = Hash::make($request->input('password'));
+            // dd($user);
+            $user->save();
+
+            return redirect()->route('auth.login')->with('success', 'Register success');
+        } catch (\Throwable $e) {
+            Log::error($e->getMessage());
+            return redirect()->back()->with('error', 'Register gagal');
         }
     }
 

@@ -39,7 +39,7 @@
                         </div>
                         <div class="text-center">
                             <button type="submit" class="btn bg-medium-green poppins-medium text-white fs-14 w-100 py-2" style="background-color: #00A3A8;">Login</button>
-                            <h6 class="poppins-medium dark-green fs-14 mt-3">Belum memiliki akun? <span><a href="" class="medium-green" style="text-decoration: none">Reqister</a></span> </h6>
+                            <h6 class="poppins-medium dark-green fs-14 mt-3">Belum memiliki akun? <span><a href="{{ route('auth.signup') }}" class="medium-green" style="text-decoration: none">Reqister</a></span> </h6>
                         </div>
                     </form>
                 </div>

@@ -30,7 +30,9 @@
                 </div>
                 <div class="col-md-6 d-flex justify-content-center align-items-center">
                     <ul class="d-flex header" style="gap: 2rem;">
+                        @if (Auth::user()->role_id === 1)
                         <a class="fs-14 poppins-medium dark-green header-list">Akun</a>
+                        @endif
                         <a href="{{ route('dashboard.manage-product.index') }}" class="fs-14 poppins-medium dark-green header-list">Produk</a>
                         <a class="fs-14 poppins-medium dark-green header-list">Transaksi</a>
                     </ul>
