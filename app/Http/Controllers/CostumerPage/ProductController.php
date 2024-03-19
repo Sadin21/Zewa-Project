@@ -24,7 +24,6 @@ class ProductController extends Controller
                     ->join('product_categories', 'products.category_id', '=', 'product_categories.id')
                     ->join('users', 'products.pemilik_id', '=', 'users.id')
                     ->select('products.id', 'products.nama', 'products.harga', 'products.foto', 'products.stok', 'products.deskripsi', 'product_categories.nama as category', 'users.nama as pemilik')
-                    // ->orderBy($orderBy, $order)
                     ->where(function ($query) use ($nama) {
                         if ($nama) {
                             $query->where('products.nama', 'like', '%'.$nama.'%');
@@ -55,5 +54,17 @@ class ProductController extends Controller
         // ]);
 
         return view('pages.customer-page.product.index', compact('product'));
+    }
+
+    public function getDetailData($id): View
+    {
+        $product = DB::table('products')
+                    ->join('product_categories', 'products.category_id', '=', 'product_categories.id')
+                    ->join('users', 'products.pemilik_id', '=', 'users.id')
+                    ->select('products.id', 'products.nama', 'products.harga', 'products.foto', 'products.stok', 'products.deskripsi', 'product_categories.nama as category', 'users.nama as pemilik')
+                    ->where('products.id', $id)
+                    ->first();
+
+        return view('pages.customer-page.product.detail', compact('product'));
     }
 }

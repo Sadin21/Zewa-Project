@@ -27,7 +27,7 @@
             <h6 class="poppins-medium fs-14">This week splecial products from Partners</h6>
         </div>
         <div>
-            <a href="#" class="btn poppins-medium text-white fs-14" style="background-color: #184A4B;">Lihat Detail</a>
+            <a href="{{ route('product.getAllData') }}" class="btn poppins-medium text-white fs-14" style="background-color: #184A4B;">Lihat Produk</a>
         </div>
     </div>
     <div class="row mt-4">

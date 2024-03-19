@@ -40,6 +40,7 @@ Route::controller(HomeController::class)->name('home.')->prefix('home')->group(f
 
 Route::controller(ProductController::class)->name('product.')->prefix('product')->group(function () {
     Route::get('/', 'getAllData')->name('getAllData');
+    Route::get('/detail/{id}', 'getDetailData')->name('getDetailData');
 });
 
 Route::controller(ProfileController::class)->name('profile.')->prefix('profile')->group(function () {

@@ -5,7 +5,13 @@
     <div class="d-flex justify-content-between">
         <div>
             <h3 class="poppins-semibold dark-green">Produk Tersedia</h3>
-            <h6 class="poppins-medium fs-14">This week splecial products from Partners</h6>
+            {{-- <h6 class="poppins-medium fs-14">This week splecial products from Partners</h6> --}}
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Zewa</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Daftar Produk</li>
+                </ol>
+            </nav>
         </div>
         <div>
             {{-- <a href="#" class="btn poppins-medium text-white fs-14" style="background-color: #184A4B;">Lihat Detail</a> --}}
@@ -22,7 +28,7 @@
                             <p class="mb-0 poppins-regular fs-12">Harga sewa mulai dari</p>
                             <p class="mb-0 poppins-medium fs-14">Rp {{number_format($p->harga,0,',','.')}}</p>
                         </div>
-                        <a href="#" class="btn poppins-medium text-white fs-14" style="background-color: #184A4B;">Lihat Detail</a>
+                        <a href="{{ route('product.getDetailData', ['id' => $p->id]) }}" class="btn poppins-medium text-white fs-14" style="background-color: #184A4B;">Lihat Detail</a>
                     </div>
                 </div>
             </div>
