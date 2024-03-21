@@ -102,7 +102,7 @@
         // $('#product-table').Datatable().destroy();
 
         $.ajax({
-            url: `{{ route('product.getAllData') }}`,
+            url: `{{ route('dashboard.product.getAllData') }}`,
             type: "GET",
             dataType: "JSON",
             success: function (res) {
@@ -173,7 +173,7 @@
             if (result.isConfirmed) {
                 $.ajax({
                     type: 'DELETE',
-                    url: `{{ route('product.delete', ['id' => 'id']) }}`.replace('id', id),
+                    url: `{{ route('dashboard.product.delete', ['id' => 'id']) }}`.replace('id', id),
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
