@@ -54,12 +54,23 @@
             <div style="width: 80%" class="pb-4 row gap-3">
                 <div class="col border border-2 rounded-0 py-4">
                     <h5 class="poppins-medium dark-green mb-3">Pilih Paket</h5>
-                    <select class="form-select" aria-label="Default select example">
-                        {{-- <option selected>Open this select menu</option> --}}
-                        <option value="1">1 Hari - Rp. 20.000</option>
-                        <option value="1">2 Hari - Rp. 40.000</option>
-                        <option value="1">3 Hari - Rp. 60.000</option>
-                      </select>
+                    {{-- <select class="form-select" aria-label="Default select example" id="duration-select">
+                        <option selected>Pilih paket</option>
+                        <option value="1">1 Hari - Rp <span id="product-price">{{number_format($product->harga,0,',','.')}}</span></option>
+                        <option value="2">2 Hari - Rp. 40.000</option>
+                        <option value="3">3 Hari - Rp. 60.000</option>
+                    </select> --}}
+                    <div class="input-group">
+                        <select class="form-select" aria-label="Default select example" id="duration-select">
+                            <option selected>Pilih hari</option>
+                            <option value="1">1</option>
+                            <option value="3">3</option>
+                            <option value="5">5</option>
+                            <option value="7">7</option>
+                        </select>
+                        {{-- <input type="date" aria-label="date" class="form-control"> --}}
+                        <input type="text" aria-label="price" id="price" class="form-control">
+                    </div>
                 </div>
                 <div class="col border border-2 rounded-0 py-4">
                     <h5 class="poppins-medium dark-green mb-3">Tanggal Waktu Sewa</h5>
@@ -80,4 +91,23 @@
         </div>
     </div>
 </section>
+@endsection
+
+@section('script')
+    <script>
+        document.getElementById('duration-select').addEventListener('change', function() {
+            var duration = parseInt(this.value);
+            var productPrice = {{ $product->harga }}
+            var totalPrice = duration * productPrice;
+
+            var displayPrice = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(totalPrice);
+
+            document.getElementById('price').value = displayPrice;
+
+            console.log(totalPrice);
+        })
+
+        // var productPrice = {{ $product->harga }}
+        // console.log(productPrice);
+    </script>
 @endsection
