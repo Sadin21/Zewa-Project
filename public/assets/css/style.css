@@ -114,3 +114,15 @@ a {
 .img-selector ion-icon {
     font-size: 32px;
 }
+
+/* tbody td tfoot th thead tr {
+    border-style: none !important;
+} */
+
+.table thead tr th {
+    border-style: none;
+}
+
+.table tbody tr td {
+    border-style: none;
+}
