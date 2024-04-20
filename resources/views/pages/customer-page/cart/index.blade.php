@@ -24,6 +24,9 @@
                     </th>
                     <th scope="col">Detail Produk</th>
                     <th scope="col">Waktu Sewa</th>
+                    <th scope="col">Waktu Pengembalian</th>
+                    <th scope="col">Status Ambil</th>
+                    <th scope="col" class="">Alamat</th>
                     <th scope="col">Sub Total</th>
                   </tr>
                 </thead>
@@ -31,19 +34,22 @@
                     @foreach ($data as $d)
                     <tr class="border border-2">
                         <td>
-                            <input class="form-check-input" type="checkbox" value="" id="check-{{ $d->id }}">
+                            <input class="form-check-input checkbox" type="checkbox" value="" id="check-{{ $d->id }}">
                         </td>
                         <td>
                             <div class="d-flex gap-3">
                                 <img src="{{ url('/assets/imgs/product/' . $d->foto) }}" alt="" style="max-height: 70px; max-width: 70px; background-size: auto; border-radius: 0px;" class="">
                                 <div class="my-auto">
-                                    <h5 class="card-title poppins-medium fs-18">{{ $d->nama }}</h5>
+                                    <h5 class="card-title poppins-medium fs-18 productName" id="productName-{{ $d->nama }}">{{ $d->nama }}</h5>
                                     <p class="mb-0 poppins-regular fs-12">{{ $d->kode }}</p>
                                 </div>
                             </div>
                         </td>
-                        <td class="align-middle card-title poppins-medium fs-18">{{ $d->waktu_sewa }}</td>
-                        <td class="align-middle card-title poppins-medium fs-18">{{ $d->sub_total }}</td>
+                        <td class="align-middle card-title poppins-medium fs-18 waktuSewa" id="waktuSewa-{{ $d->waktu_sewa }}">{{ $d->waktu_sewa }}</td>
+                        <td class="align-middle card-title poppins-medium fs-18 waktuPengembalian" id="waktuPengembalian-{{ $d->waktu_pengembalian }}">{{ $d->waktu_pengembalian }}</td>
+                        <td class="align-middle card-title poppins-medium fs-18 statusAmbil" id="statusAmbil-{{ $d->status_ambil }}">{{ $d->status_ambil }}</td>
+                        <td class="align-middle card-title poppins-medium fs-18  alamat" id="alamat-{{ $d->status_ambil }}">{{ $d->alamat }}</td>
+                        <td class="align-middle card-title poppins-medium fs-18 subTotal" id="subtotal-{{ $d->sub_total }}">{{ $d->sub_total }}</td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -57,7 +63,7 @@
                         <p class="mb-0 poppins-medium fs-14">Total sewa</p>
                     </div>
                     <div>
-                        <p class="mb-0 poppins-medium fs-14">Rp 140.000</p>
+                        <p class="mb-0 poppins-medium fs-14" id="subtotal-for-pay">Rp 140.000</p>
                     </div>
                 </div>
                 <div class="d-flex justify-content-between mt-2">
@@ -65,11 +71,10 @@
                         <p class="mb-0 poppins-medium fs-14">Produk</p>
                     </div>
                     <div class="text-end">
-                        <p class="mb-0 poppins-medium fs-14">Macbook</p>
-                        <p class="mb-0 poppins-medium fs-14">Pisau</p>
+                        <p class="mb-0 poppins-medium fs-14" id="product-for-pay">-</p>
                     </div>
                 </div>
-                <a href="#" class="btn poppins-medium text-white fs-14 w-100 mt-4" style="background-color: #184A4B;">Bayar</a>
+                <a href="" class="btn poppins-medium text-white fs-14 w-100 mt-4" style="background-color: #184A4B;" id="buttonPay">Bayar</a>
             </div>
         </div>
     </div>
@@ -77,35 +82,101 @@
 @endsection
 
 @section('script')
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var checkAllCheckbox = document.getElementById('checkAll');
+        $(document).ready(function() {
+            // when checkAll checkbox is clicked
+            $('#checkAll').click(function() {
+                $('.checkbox').prop('checked', $(this).prop('checked'));
+                displayTotal();
+            })
 
-            var checkboxes = document.querySelectorAll('input[type="checkbox"]:not(#checkAll)');
+            $('.checkbox').click(function() {
+                displayTotal();
+            })
 
-            // add event listener to each checkbox except "checkAll"
-            checkboxes.forEach(function(checkbox) {
-                checkbox.addEventListener('change', function() {
-                    if (!this.checked) {
-                        checkAllCheckbox.checked = false;
-                    }
-                    // Call the getCheckboxValue function whenever a checkbox is changed
-                    getCheckboxValue();
+            var grandTotal = 0;
+            var selectedProduct = [];
+            var cartId = [];
+            var totalQty = 0;
+
+            function displayTotal() {
+
+                selectedProduct = [];
+                $('.checkbox:checked').each(function() {
+                    var row = $(this).closest('tr');
+                    var cartId = row.find('.checkbox').attr('id').substring(6);
+                    var productName = row.find('.productName').text();
+                    var waktuSewa = row.find('.waktuSewa').text();
+                    var waktuPengembalian = row.find('.waktuPengembalian').text();
+                    var statusAmbil = row.find('.statusAmbil').text();
+                    var alamat = row.find('.alamat').text();
+                    var subTotal = parseFloat(row.find('.subTotal').text());
+                    var totalQty = parseFloat(row.find('.checkbox').val());
+
+                    grandTotal += subTotal;
+                    selectedProduct.push({ cartId: cartId, productName: productName, waktuSewa: waktuSewa, waktuPengembalian: waktuPengembalian, statusAmbil: statusAmbil, alamat: alamat, subTotal: subTotal })
                 });
-            });
 
-            function getCheckboxValue() {
-                var checkedValues = [];
-                checkboxes.forEach(function(checkbox) {
-                    if (checkbox.checked && checkbox !== checkAllCheckbox) {
-                        var id = checkbox.id.substring(6);
-                        checkedValues.push(id);
+                $('#subtotal-for-pay').text('Rp ' + grandTotal);
+
+                var productContainer = $('#product-for-pay');
+                productContainer.empty();
+
+                selectedProduct.forEach(function(product) {
+                    var productName = $('<p>', {
+                        class: 'mb-0 poppins-medium fs-14',
+                        text: product.productName
+                    });
+
+                    productContainer.append(productName);
+                })
+
+            }
+
+            $('#buttonPay').click(function(e) {
+                e.preventDefault();
+                var snapToken = null;
+
+                function handleSnapToken(token) {
+                    snapToken = token;
+                }
+
+
+                $.ajax({
+                    url: "{{ route('transaction.checkout') }}",
+                    type: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        selectedProduct: selectedProduct,
+                        grandTotal: grandTotal,
+                        totalQty: selectedProduct.length
+                    },
+                    success: function(res) {
+                        console.log(res);
+
+                        snap.pay(res.snapToken, {
+                            onSuccess: function(result){
+                                var successUrl = "{{ route('transaction.success') }}?transactionHdrId=" + res.transactionHdrId;
+                                window.location.href = successUrl;
+                            },
+                            onPending: function(result){
+                                /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+                            },
+                            onError: function(result){
+                                /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+                            }
+                        });
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error("Error:", textStatus, errorThrown);
                     }
                 });
-                // console.log('Checked values:', checkedValues);
-                return checkedValues;
-            };
+            })
 
-        });
+        })
     </script>
+
 @endsection

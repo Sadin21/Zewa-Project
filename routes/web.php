@@ -6,6 +6,7 @@ use App\Http\Controllers\CostumerPage\HomeController;
 use App\Http\Controllers\CostumerPage\ProfileController;
 use App\Http\Controllers\CostumerPage\ProductController;
 use App\Http\Controllers\CostumerPage\CartController;
+use App\Http\Controllers\CostumerPage\TransactionController;
 use App\Http\Controllers\Dashboard\ManageUserController;
 use App\Http\Controllers\Dashboard\ManageProductController;
 
@@ -43,6 +44,12 @@ Route::controller(ProductController::class)->name('product.')->prefix('product')
 Route::controller(CartController::class)->name('cart.')->prefix('cart')->group(function () {
     Route::get('/', 'index')->name('index');
     Route::post('store', 'store')->name('store');
+});
+
+Route::controller(TransactionController::class)->name('transaction.')->prefix('transaction')->group(function () {
+    Route::post('/checkout', 'process')->name('checkout');
+    Route::get('/success', 'updatePaymentStatus')->name('success');
+    Route::get('/index', 'index')->name('index');
 });
 
 Route::controller(ProfileController::class)->name('profile.')->prefix('profile')->group(function () {

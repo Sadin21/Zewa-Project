@@ -36,6 +36,7 @@
                     <a href="{{ route('home.index') }}" class="fs-14 poppins-medium dark-green header-list">Beranda</a>
                     <a href="{{ route('product.getAllData') }}" class="fs-14 poppins-medium dark-green header-list">Produk</a>
                     <a href="{{ route('cart.index') }}" class="fs-14 poppins-medium dark-green header-list">Keranjang</a>
+                    <a href="{{ route('transaction.index') }}" class="fs-14 poppins-medium dark-green header-list">Transaksi</a>
                     <a href="" class="fs-14 poppins-medium dark-green header-list">Tentang Kami</a>
                 </ul>
             </div>

@@ -5,17 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Cart extends Model
+class TransactionHdr extends Model
 {
     use HasFactory;
-
     protected $fillable = [
-        'product_id',
         'user_id',
-        'waktu_sewa',
-        'paket_sewa',
-        'waktu_pengembalian',
-        'status_ambil',
-        'alamat',
+        'no_transaksi',
+        'total_qty',
+        'grand_total',
+        'payment',
+        'uang_dibayar',
+        'status',
+        'snap_token'
     ];
 }

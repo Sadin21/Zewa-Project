@@ -11,18 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('carts', function (Blueprint $table) {
+        Schema::create('transaction_lines', function (Blueprint $table) {
             $table->id();
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade')->onUpdate('cascade');
+            $table->unsignedBigInteger('hdr_id');
+            $table->foreign('hdr_id')->references('id')->on('transaction_hdrs')->onDelete('cascade')->onUpdate('cascade');
             $table->unsignedBigInteger('product_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->unsignedBigInteger('user_id');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade')->onUpdate('cascade');
+            $table->unsignedBigInteger('cart_id');
+            $table->foreign('cart_id')->references('id')->on('carts')->onDelete('cascade')->onUpdate('cascade');
+            $table->bigInteger('sub_total');
             $table->dateTime('waktu_sewa');
-            $table->bigInteger('paket_sewa');
             $table->dateTime('waktu_pengembalian');
             $table->string('status_ambil');
             $table->string('alamat')->nullable();
-            $table->bigInteger('sub_total')->default(0);
             $table->timestamps();
         });
     }
@@ -32,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('carts');
+        Schema::dropIfExists('transaction_lines');
     }
 };
