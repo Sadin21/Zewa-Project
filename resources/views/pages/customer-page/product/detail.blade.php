@@ -53,13 +53,10 @@
             </div>
             <div style="width: 80%" class="pb-4 row gap-3">
                 <div class="col border border-2 rounded-0 py-4">
-                    <h5 class="poppins-medium dark-green mb-3">Pilih Paket</h5>
-                    {{-- <select class="form-select" aria-label="Default select example" id="duration-select">
-                        <option selected>Pilih paket</option>
-                        <option value="1">1 Hari - Rp <span id="product-price">{{number_format($product->harga,0,',','.')}}</span></option>
-                        <option value="2">2 Hari - Rp. 40.000</option>
-                        <option value="3">3 Hari - Rp. 60.000</option>
-                    </select> --}}
+                    <div class="d-flex gap-2">
+                        <h5 class="poppins-medium dark-green mb-3">Pilih Paket</h5>
+                        <h6 class="poppins-medium fs-14"><span class="badge" style="background-color: #184A4B;">Wajib</span></h6>
+                    </div>
                     <div class="input-group">
                         <select class="form-select" aria-label="Default select example" id="package-sewa">
                             <option selected>Pilih hari</option>
@@ -72,7 +69,10 @@
                     </div>
                 </div>
                 <div class="col border border-2 rounded-0 py-4">
-                    <h5 class="poppins-medium dark-green mb-3">Tanggal Waktu Sewa</h5>
+                    <div class="d-flex gap-2">
+                        <h5 class="poppins-medium dark-green mb-3">Tanggal Waktu Sewa</h5>
+                        <h6 class="poppins-medium fs-14"><span class="badge" style="background-color: #184A4B;">Wajib</span></h6>
+                    </div>
                     <div class="input-group">
                         <input type="date" aria-label="date" class="form-control" id="date-sewa">
                         <input type="time" aria-label="time" class="form-control" id="time-sewa">
@@ -81,7 +81,10 @@
             </div>
             <div style="width: 80%" class="pb-4 row gap-3">
                 <div class="col border border-2 rounded-0 py-4">
-                    <h5 class="poppins-medium dark-green mb-3">Pilih Tipe Sewa</h5>
+                    <div class="d-flex gap-2">
+                        <h5 class="poppins-medium dark-green mb-3">Pilih Tipe Sewa</h5>
+                        <h6 class="poppins-medium fs-14"><span class="badge" style="background-color: #184A4B;">Wajib</span></h6>
+                    </div>
                     <div class="input-group">
                         <select class="form-select" aria-label="Default select example" id="status-sewa">
                             <option value="ambil">Ambil Sendiri</option>
@@ -90,6 +93,10 @@
                     </div>
                 </div>
                 <div class="col border border-2 rounded-0 py-4">
+                    <div class="d-flex gap-2">
+                        <h5 class="poppins-medium dark-green mb-3">Pilih Tipe Sewa</h5>
+                        <h6 class="poppins-regular fs-14"><span class="badge text-bg-secondary">Isi jika ambil sendiri</span></h6>
+                    </div>
                     <h5 class="poppins-medium dark-green mb-3">Alamat</h5>
                     <div class="form-floating">
                         <textarea class="form-control" id="address-sewa" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 150px"></textarea>
@@ -113,6 +120,7 @@
 @endsection
 
 @section('script')
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script>
     <script>
         var totalPrice = 0;
 
@@ -157,7 +165,6 @@
                 e.preventDefault();
 
                 const selectedValue = getSelectedValue();
-                console.log(selectedValue);
 
                 $.ajax({
                     url: "{{ route('cart.store') }}",
@@ -175,13 +182,97 @@
                         alamat: selectedValue.selectedAddress
                     },
                     success: function(res) {
-                        window.location.href = "{{ route('cart.index') }}";
+                        Toast.fire({
+                            icon: 'success',
+                            text: res.message
+                        });
+
+                        setTimeout(() => {
+                            window.location.href = "{{ route('cart.index') }}";
+                        }, 2500);
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
-                        console.error("Error:", textStatus, errorThrown);
+                        const response = jqXHR.responseJSON;
+                        if (response) {
+                            Toast.fire({
+                                icon: 'error',
+                                text: response.message
+                            });
+                        } else {
+                            console.error("Error:", textStatus, errorThrown);
+                        }
+                    }
+                });
+            })
+
+            $('#directPayment').click(function(e) {
+                e.preventDefault();
+
+                var snapToken = null;
+
+                function handleSnapToken(token) {
+                    snapToken = token;
+                }
+
+                const selectedValue = getSelectedValue();
+
+                const waktu_sewa = new Date(selectedValue.selectedDatetime);
+                const paket_sewa = parseInt(selectedValue.selectedPackage);
+
+                const waktu_pengembalian = new Date(waktu_sewa);
+                waktu_pengembalian.setDate(waktu_pengembalian.getDate() + paket_sewa);
+
+                const formatted_waktu_pengembalian = waktu_pengembalian.toISOString().slice(0, 10);
+
+                const selectedProduct = {
+                    productId: selectedValue.productId,
+                    subTotal: selectedValue.selectedPrice,
+                    waktuSewa: selectedValue.selectedDatetime,
+                    waktuPengembalian: formatted_waktu_pengembalian,
+                    statusAmbil: selectedValue.selectedStatus,
+                    alamat: selectedValue.selectedAddress,
+                }
+
+                $.ajax({
+                    url: "{{ route('transaction.checkout') }}",
+                    type: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        selectedProduct: selectedProduct,
+                        grandTotal: selectedValue.selectedPrice,
+                        totalQty: 1,
+                        directPayment: 1
+                    },
+                    success: function(res) {
+                        snap.pay(res.snapToken, {
+                            onSuccess: function(result){
+                                var successUrl = "{{ route('transaction.success') }}?transactionHdrId=" + res.transactionHdrId;
+                                window.location.href = successUrl;
+                            },
+                            onPending: function(result){
+                                /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+                            },
+                            onError: function(result){
+                                /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+                            }
+                        });
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        const response = jqXHR.responseJSON;
+                        if (response) {
+                            Toast.fire({
+                                icon: 'error',
+                                text: response.message
+                            });
+                        } else {
+                            console.error("Error:", textStatus, errorThrown);
+                        }
                     }
                 });
             })
         })
     </script>
+
 @endsection

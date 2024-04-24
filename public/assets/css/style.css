@@ -70,6 +70,7 @@ li.header-list {
 
 a {
     text-decoration: none !important;
+    color: black !important;
 }
 
 /* .breadcrumb-item {
@@ -121,8 +122,17 @@ a {
 
 .table thead tr th {
     border-style: none;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px !important;
 }
 
 .table tbody tr td {
     border-style: none;
+    border-style: none;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px !important;
 }

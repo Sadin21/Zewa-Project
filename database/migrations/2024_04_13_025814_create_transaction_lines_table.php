@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('hdr_id')->references('id')->on('transaction_hdrs')->onDelete('cascade')->onUpdate('cascade');
             $table->unsignedBigInteger('product_id');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade')->onUpdate('cascade');
-            $table->unsignedBigInteger('cart_id');
+            $table->unsignedBigInteger('cart_id')->nullable();
             $table->foreign('cart_id')->references('id')->on('carts')->onDelete('cascade')->onUpdate('cascade');
             $table->bigInteger('sub_total');
             $table->dateTime('waktu_sewa');

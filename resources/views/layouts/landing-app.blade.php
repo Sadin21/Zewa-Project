@@ -14,13 +14,17 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+    {{-- font awesome cdn --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     {{-- select2 --}}
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" /> --}}
+    {{-- <script src="{{ asset('vendor/sweetalerts/sweetalert2.all.min.js') }}"></script> --}}
+    {{-- <link rel="stylesheet" href="{{ asset('vendor/sweetalerts/sweetalert2.min.css') }}"> --}}
+
+    {{-- <script src="https://code.jquery.com/jquery-3.7.0.js"></script> --}}
 
   </head>
   <body>
@@ -34,7 +38,7 @@
             <div class="col-md-6 d-flex justify-content-center align-items-center">
                 <ul class="d-flex header" style="gap: 2rem;">
                     <a href="{{ route('home.index') }}" class="fs-14 poppins-medium dark-green header-list">Beranda</a>
-                    <a href="{{ route('product.getAllData') }}" class="fs-14 poppins-medium dark-green header-list">Produk</a>
+                    <a href="{{ route('product.index') }}" class="fs-14 poppins-medium dark-green header-list">Produk</a>
                     <a href="{{ route('cart.index') }}" class="fs-14 poppins-medium dark-green header-list">Keranjang</a>
                     <a href="{{ route('transaction.index') }}" class="fs-14 poppins-medium dark-green header-list">Transaksi</a>
                     <a href="" class="fs-14 poppins-medium dark-green header-list">Tentang Kami</a>
@@ -69,14 +73,12 @@
 
                     @if (Auth::user()->role_id !== 3)
                     <a class="w-100 dropdown-item d-flex align-items-center gap-2 p-2 mb-1 rounded cursor-pointer" href="">
-                        {{-- <ion-icon name="settings" class="f20 flex-shrink-0"></ion-icon> --}}
-                        <a href="{{ route('dashboard.manage-product.index') }}" class="user-select-none fw-medium flex-grow-1">Dashboard</a>
+                        <a href="{{ route('dashboard.manage-product.index') }}" class="user-select-none fw-medium flex-grow-1 ms-2">Dashboard</a>
                     </a>
                     @endif
 
                     <a class="w-100 dropdown-item d-flex align-items-center gap-2 p-2 mb-1 rounded cursor-pointer" href="">
-                        {{-- <ion-icon name="settings" class="f20 flex-shrink-0"></ion-icon> --}}
-                        <a href="{{ route('profile.update') }}" class="user-select-none fw-medium flex-grow-1">Profil</a>
+                        <a href="{{ route('profile.update') }}" class="user-select-none fw-medium flex-grow-1 ms-2">Profil</a>
                     </a>
 
                     <form action="{{ route('auth.logout') }}" method="POST">
@@ -107,6 +109,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script> --}}
 
     @yield('script')
   </body>

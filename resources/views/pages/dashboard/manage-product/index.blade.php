@@ -97,12 +97,11 @@
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 
 <script>
+    var logedUser = {!! json_encode(Auth::user()->id ?? null) !!};
 
     function showData() {
-        // $('#product-table').Datatable().destroy();
-
         $.ajax({
-            url: `{{ route('dashboard.product.getAllData') }}`,
+            url: "{{ route('dashboard.product.getAllData') }}?logedUserId=" + logedUser,
             type: "GET",
             dataType: "JSON",
             success: function (res) {

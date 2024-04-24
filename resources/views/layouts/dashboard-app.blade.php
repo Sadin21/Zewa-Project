@@ -34,7 +34,7 @@
                         <a class="fs-14 poppins-medium dark-green header-list">Akun</a>
                         @endif
                         <a href="{{ route('dashboard.manage-product.index') }}" class="fs-14 poppins-medium dark-green header-list">Produk</a>
-                        <a class="fs-14 poppins-medium dark-green header-list">Transaksi</a>
+                        <a href="{{ route('dashboard.manage-transaction.index') }}" class="fs-14 poppins-medium dark-green header-list">Transaksi</a>
                     </ul>
                 </div>
                 @if (Auth::user())

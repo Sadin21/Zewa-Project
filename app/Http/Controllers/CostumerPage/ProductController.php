@@ -11,13 +11,24 @@ use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
-    public function getAllData(Request $request): View | RedirectResponse
+    public function index(): View
+    {
+        $categoryData = DB::table('products')
+            ->join('product_categories', 'products.category_id', '=', 'product_categories.id')
+            ->select('category_id', DB::raw('count(*) as total'), 'product_categories.nama as category')
+            ->groupBy('category_id')
+            ->get();
+
+        return view('pages.customer-page.product.index', compact('categoryData'));
+    }
+
+    public function getAllData(Request $request)
     {
         $keyword = $request->keyword;
         $order = $request->order;
         $orderBy = $request->orderBy;
         $nama = $request->nama?? 0;
-        $kategori = $request->kategori?? 0;
+        $category = $request->category;
         $pemilik = $request->pemilik?? 0;
 
         $product = DB::table('products')
@@ -29,9 +40,9 @@ class ProductController extends Controller
                             $query->where('products.nama', 'like', '%'.$nama.'%');
                         }
                     })
-                    ->orWhere(function ($query) use ($kategori) {
-                        if ($kategori) {
-                            $query->where('product_categories.nama', 'like', '%'.$kategori.'%');
+                    ->orWhere(function ($query) use ($category) {
+                        if ($category) {
+                            $query->where('product_categories.nama', 'like', '%'.$category.'%');
                         }
                     })
                     ->orWhere(function ($query) use ($pemilik) {
@@ -40,20 +51,15 @@ class ProductController extends Controller
                         }
                     });
 
-        // if ($keyword) {
-
-        // }
-
         $product = $product->get();
-        // dd($product);
 
-        // return response()->json([
-        //     'totalRecords' => $product->count(),
-        //     'status' => 'success',
-        //     'data' => $product
-        // ]);
+        return response()->json([
+            'totalRecords' => $product->count(),
+            'data' => $product,
+            'message' => 'Success get data'
+        ], 200);
 
-        return view('pages.customer-page.product.index', compact('product'));
+        // return view('pages.customer-page.product.index', compact('product'));
     }
 
     public function getDetailData($id): View
@@ -66,5 +72,22 @@ class ProductController extends Controller
                     ->first();
 
         return view('pages.customer-page.product.detail', compact('product'));
+    }
+
+    public function getDataByName(Request $request)
+    {
+        $data = [];
+
+        if ($request->has('q')) {
+            // $search = $request->q;
+            $search = 'Kain';
+
+            $data = DB::table('products')
+                ->select('id', 'nama')
+                ->where('nama', 'LIKE', "%$search%")
+                ->get();
+        }
+
+        return response()->json($data);
     }
 }

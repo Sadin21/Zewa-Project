@@ -24,9 +24,9 @@
                     </th>
                     <th scope="col">Detail Produk</th>
                     <th scope="col">Waktu Sewa</th>
-                    <th scope="col">Waktu Pengembalian</th>
+                    <th scope="col">Waktu Kembali</th>
                     <th scope="col">Status Ambil</th>
-                    <th scope="col" class="">Alamat</th>
+                    <th scope="col" class="col-3" sstyle="width:20%">Alamat</th>
                     <th scope="col">Sub Total</th>
                   </tr>
                 </thead>
@@ -35,6 +35,7 @@
                     <tr class="border border-2">
                         <td>
                             <input class="form-check-input checkbox" type="checkbox" value="" id="check-{{ $d->id }}">
+                            <p class="visually-hidden productId">{{ $d->productId }}</p>
                         </td>
                         <td>
                             <div class="d-flex gap-3">
@@ -63,7 +64,7 @@
                         <p class="mb-0 poppins-medium fs-14">Total sewa</p>
                     </div>
                     <div>
-                        <p class="mb-0 poppins-medium fs-14" id="subtotal-for-pay">Rp 140.000</p>
+                        <p class="mb-0 poppins-medium fs-14" id="subtotal-for-pay">Rp 0</p>
                     </div>
                 </div>
                 <div class="d-flex justify-content-between mt-2">
@@ -84,6 +85,7 @@
 @section('script')
     <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script>
     <script>
+
         $(document).ready(function() {
             // when checkAll checkbox is clicked
             $('#checkAll').click(function() {
@@ -105,6 +107,7 @@
                 selectedProduct = [];
                 $('.checkbox:checked').each(function() {
                     var row = $(this).closest('tr');
+                    var productId = row.find('.productId').text();
                     var cartId = row.find('.checkbox').attr('id').substring(6);
                     var productName = row.find('.productName').text();
                     var waktuSewa = row.find('.waktuSewa').text();
@@ -115,7 +118,15 @@
                     var totalQty = parseFloat(row.find('.checkbox').val());
 
                     grandTotal += subTotal;
-                    selectedProduct.push({ cartId: cartId, productName: productName, waktuSewa: waktuSewa, waktuPengembalian: waktuPengembalian, statusAmbil: statusAmbil, alamat: alamat, subTotal: subTotal })
+                    selectedProduct.push({
+                        cartId: cartId,
+                        productId: productId,
+                        productName: productName,
+                        waktuSewa: waktuSewa,
+                        waktuPengembalian: waktuPengembalian,
+                        statusAmbil: statusAmbil,
+                        alamat: alamat,
+                        subTotal: subTotal })
                 });
 
                 $('#subtotal-for-pay').text('Rp ' + grandTotal);
@@ -142,7 +153,6 @@
                     snapToken = token;
                 }
 
-
                 $.ajax({
                     url: "{{ route('transaction.checkout') }}",
                     type: 'POST',
@@ -152,11 +162,10 @@
                     data: {
                         selectedProduct: selectedProduct,
                         grandTotal: grandTotal,
-                        totalQty: selectedProduct.length
+                        totalQty: selectedProduct.length,
+                        directPayment: 0
                     },
                     success: function(res) {
-                        console.log(res);
-
                         snap.pay(res.snapToken, {
                             onSuccess: function(result){
                                 var successUrl = "{{ route('transaction.success') }}?transactionHdrId=" + res.transactionHdrId;
@@ -178,5 +187,4 @@
 
         })
     </script>
-
 @endsection

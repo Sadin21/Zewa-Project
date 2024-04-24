@@ -25,6 +25,9 @@ class AuthController extends Controller
 
 
         if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+            $token = $user->createToken('authToken')->plainTextToken;
+
             return redirect()->route('home.index')->with('success', 'Login success');
         } else {
             return redirect()->back()->with('error', 'Login gagal');

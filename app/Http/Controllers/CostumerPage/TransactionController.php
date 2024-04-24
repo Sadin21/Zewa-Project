@@ -35,8 +35,7 @@ class TransactionController extends Controller
         $selectedProduct = $data['selectedProduct'];
         $grandTotal = $data['grandTotal'];
         $totalQty = $data['totalQty'];
-
-        // dd($selectedProduct);
+        $directPayment = $data['directPayment'];
 
         DB::beginTransaction();
 
@@ -76,18 +75,50 @@ class TransactionController extends Controller
             $transaction_hdr->snap_token = $snapToken;
             $transaction_hdr->save();
 
-            foreach ($selectedProduct as $p) {
-                $product = Product::where('nama', $p['productName'])->first();
+            if ($directPayment !== '1') {
+                foreach ($selectedProduct as $p) {
+                    $product = Product::where('nama', $p['productName'])->first();
+                    if ($product) {
+                        TransactionLine::create([
+                            'hdr_id' => $transaction_hdr->id,
+                            'product_id' => $product->id,
+                            'cart_id' => $p['cartId'],
+                            'sub_total' => $p['subTotal'],
+                            'waktu_sewa' => $p['waktuSewa'],
+                            'waktu_pengembalian' => $p['waktuPengembalian'],
+                            'status_ambil' => $p['statusAmbil'],
+                            'alamat' => $p['alamat']? $p['alamat'] : null,
+                        ]);
+                    }
+                }
+            } else {
+                $product = Product::findOrFail($selectedProduct['productId']);
+                $product->stok = $product->stok - intval($totalQty);
+                $product->tersewakan = $product->tersewakan + intval($totalQty);
+                $product->save();
+
+                if ($product->stok < 1) {
+                    return response()->json([
+                        'message' => 'Stok produk tidak mencukupi'
+                    ], 400);
+                }
+
+                if (auth()->user()->role_id != '3') {
+                    return response()->json([
+                        'message' => 'Anda tidak bisa menyewa produk'
+                    ], 400);
+                }
+
                 if ($product) {
                     TransactionLine::create([
                         'hdr_id' => $transaction_hdr->id,
                         'product_id' => $product->id,
-                        'cart_id' => $p['cartId'],
-                        'sub_total' => $p['subTotal'],
-                        'waktu_sewa' => $p['waktuSewa'],
-                        'waktu_pengembalian' => $p['waktuPengembalian'],
-                        'status_ambil' => $p['statusAmbil'],
-                        'alamat' => $p['alamat']? $p['alamat'] : null,
+                        'cart_id' => $selectedProduct['cartId'],
+                        'sub_total' => $selectedProduct['subTotal'],
+                        'waktu_sewa' => $selectedProduct['waktuSewa'],
+                        'waktu_pengembalian' => $selectedProduct['waktuPengembalian'],
+                        'status_ambil' => $selectedProduct['statusAmbil'],
+                        'alamat' => $selectedProduct['alamat']? $selectedProduct['alamat'] : null,
                     ]);
                 }
             }

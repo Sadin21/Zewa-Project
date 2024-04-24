@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\JsonResponse;
 use Nette\Utils\Random;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class ManageProductController extends Controller
 {
@@ -22,10 +23,12 @@ class ManageProductController extends Controller
     public function getAllData(Request $request): JsonResponse
     {
         $limit = $request->limit;
+        $logedUserId = $request->query('logedUserId');
 
         $products = DB::table('products')
                     ->join('product_categories', 'products.category_id', '=', 'product_categories.id')
                     ->join('users', 'products.pemilik_id', '=', 'users.id')
+                    ->where('products.pemilik_id', $logedUserId)
                     ->select('products.id', 'product_categories.nama as category', 'products.kode', 'users.nama as pemilik', 'products.nama', 'products.harga', 'products.tersewakan', 'products.stok', 'products.foto', 'products.deskripsi', 'products.created_at', 'products.updated_at');
 
         if ($limit && is_numeric($limit)) $products->limit($limit);

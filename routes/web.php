@@ -9,6 +9,7 @@ use App\Http\Controllers\CostumerPage\CartController;
 use App\Http\Controllers\CostumerPage\TransactionController;
 use App\Http\Controllers\Dashboard\ManageUserController;
 use App\Http\Controllers\Dashboard\ManageProductController;
+use App\Http\Controllers\Dashboard\ManageTransactionController;
 
 
 /*
@@ -37,7 +38,7 @@ Route::controller(HomeController::class)->name('home.')->prefix('home')->group(f
 });
 
 Route::controller(ProductController::class)->name('product.')->prefix('product')->group(function () {
-    Route::get('/', 'getAllData')->name('getAllData');
+    Route::get('/', 'index')->name('index');
     Route::get('/detail/{id}', 'getDetailData')->name('getDetailData');
 });
 
@@ -70,5 +71,9 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::match(['get', 'post'], 'create', 'create')->name('create');
         Route::match(['get', 'post'], '{id}', 'update')->name('update');
+    });
+
+    Route::controller(ManageTransactionController::class)->name('manage-transaction.')->prefix('manage-transaction')->group(function () {
+        Route::get('/', 'index')->name('index');
     });
 });

@@ -3,19 +3,10 @@
 @section('content')
 <section>
     <div class="position-relative">
-        <img src="{{ url('/assets/imgs/bg2.png') }}" alt="" style="height: 600px; background-size: auto; border-radius: 10px;" class="w-100">
+        <img src="{{ url('/assets/imgs/bg2.png') }}" alt="" style="height: 400px; background-size: cover; border-radius: 10px;" class="w-100">
         <div class="position-absolute top-50 start-50 translate-middle text-center">
             <h1 class="poppins-semibold text-white">Find A Product</h1>
             <h1 class="poppins-semibold text-white">You'll Love To Live</h1>
-            <div class="bg-white mt-4 p-2 d-flex gap-3" style="width: 600px; border-radius: 4px;">
-                <select class="form-select" aria-label="Default select example">
-                    <option selected>Cari kategori produk</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                </select>
-                <button type="button" class="btn poppins-medium text-white fs-14 py-2" style="background-color: #00A3A8;">Cari</button>
-            </div>
         </div>
     </div>
 </section>
@@ -27,7 +18,7 @@
             <h6 class="poppins-medium fs-14">This week splecial products from Partners</h6>
         </div>
         <div>
-            <a href="{{ route('product.getAllData') }}" class="btn poppins-medium text-white fs-14" style="background-color: #184A4B;">Lihat Produk</a>
+            <a href="{{ route('product.index') }}" class="btn poppins-medium text-white fs-14" style="background-color: #184A4B;">Lihat Produk</a>
         </div>
     </div>
     <div class="row mt-4">
@@ -70,7 +61,6 @@
                             <p class="mb-0 poppins-regular fs-12">Total barang tersedia saat ini</p>
                             <p class="mb-0 poppins-medium fs-14">{{ $cp->total }} unit</p>
                         </div>
-                        <a href="#" class="btn poppins-medium text-white fs-14" style="background-color: #184A4B;">Lihat Produk</a>
                     </div>
                 </div>
             </div>
@@ -115,4 +105,31 @@
 <section class="text-center" style="margin-top: 8rem;">
     <h6 class="poppins-medium fs-14">Zewa@2024</h6>
 </section>
+@endsection
+
+@section('script')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    // didOpen:(toast)=>{toast.addEventListener('mouseenter', Swal.stopTimer);toast.addEventListener('mouseleave', Swal.resumeTimer);}
+    const Toast = Swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:5000,timerProgressBar:true});
+
+    @if ($errors->any())
+        @foreach ($errors->all() as $error)
+            Toast.fire({ icon: 'error', title: '{{ $error }}' });
+        @endforeach
+    @endif
+
+    @if ($message = Session::get('error'))
+        Toast.fire({ icon: 'error', title: '{{ $message }}' });
+    @endif
+
+    @if ($message = Session::get('success'))
+        Toast.fire({ icon: 'success', title: '{{ $message }}' });
+    @endif
+
+    @if ($message = Session::get('warning'))
+        Toast.fire({ icon: 'warning', title: '{{ $message }}' });
+    @endif
+</script>
+
 @endsection
