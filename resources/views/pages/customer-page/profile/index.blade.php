@@ -7,7 +7,7 @@
         @csrf
         <div class="row">
             <div class="col-2">
-                <div class="flex-grow-1 d-flex gap-3">
+                {{-- <div class="flex-grow-1 d-flex gap-3">
                     <div>
                         <input type="file" name="foto" id="foto" class="d-none" />
                         <label for="foto" class="img-selector pc-logo">
@@ -16,6 +16,19 @@
                     </div>
                     <div id="img-preview" style="width: 135px; height: 60px">
                         <img src="/assets/imgs/{{ isset($user) ? $user->foto : '' }}" class="img-fluid border border-2 border-primary rounded" alt="">
+                    </div>
+                </div> --}}
+
+
+                <div>
+                    <input type="file" name="foto" id="foto" class="d-none" />
+                    <div class="">
+                        <label for="foto" style="border: 1px solid grey" class="img-selector pc-logo mb-2">
+                            <i class="fa-solid fa-plus"></i>
+                        </label>
+                        <div id="img-preview" style="width: 135px; height: 60px">
+                            <img src="/assets/imgs/user/{{ isset($user) ? $user->foto : '' }}" class="img-fluid border border-2 border-primary rounded" alt="">
+                        </div>
                     </div>
                 </div>
             </div>

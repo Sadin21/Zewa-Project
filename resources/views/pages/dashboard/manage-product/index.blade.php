@@ -98,10 +98,11 @@
 
 <script>
     var logedUser = {!! json_encode(Auth::user()->id ?? null) !!};
+    var logedUserRole = {!! json_encode(Auth::user()->role_id ?? null) !!};
 
     function showData() {
         $.ajax({
-            url: "{{ route('dashboard.product.getAllData') }}?logedUserId=" + logedUser,
+            url: "{{ route('dashboard.product.getAllData') }}?logedUserId=" + logedUser + "&logedUserRole=" + logedUserRole,
             type: "GET",
             dataType: "JSON",
             success: function (res) {

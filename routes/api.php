@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dashboard\ManageProductController;
 use App\Http\Controllers\Dashboard\ManageTransactionController;
+use App\Http\Controllers\Dashboard\ManageUserController;
+use App\Http\Controllers\Dashboard\ManageProductCategoryController;
 use App\Http\Controllers\CostumerPage\ProductCategoryController;
 use App\Http\Controllers\CostumerPage\ProductController;
 
@@ -39,5 +41,15 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
 
     Route::controller(ManageTransactionController::class)->name('manage-transaction.')->prefix('manage-transaction')->group(function () {
         Route::get('/', 'getAllData')->name('getAllData');
+    });
+
+    Route::controller(ManageUserController::class)->name('manage-user.')->prefix('manage-user')->group(function () {
+        Route::get('/', 'getAllData')->name('getAllData');
+        Route::delete('delete/{id}', 'destroy')->name('delete');
+    });
+
+    Route::controller(ManageProductCategoryController::class)->name('manage-product-category.')->prefix('manage-product-category')->group(function () {
+        Route::get('/', 'getAllData')->name('getAllData');
+        Route::delete('delete/{id}', 'destroy')->name('delete');
     });
 });

@@ -5,26 +5,21 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Kelola Akun</li>
+            <li class="breadcrumb-item active" aria-current="page">Kelola Kategori Produk</li>
         </ol>
     </nav>
 
     <div class="card border-0 flex-grow-1 d-flex flex-column" id="table">
         <div>
-            <a class="btn btn btn-success" href="{{ route('dashboard.manage-user.create') }}">Tambah</a>
+            <a class="btn btn btn-success" href="{{ route('dashboard.manage-product-category.create') }}">Tambah</a>
         </div>
 
         <div class="p-1 flex-grow-1 mt-4 menu-table">
-            <table class="table w-100" id="user-table" style="border-radius: 10px">
+            <table class="table w-100" id="product-category-table" style="border-radius: 10px">
                 <thead>
                     <tr style="background-color: #F8F8F8">
-                        <th>Foto</th>
                         <th>Nama</th>
-                        <th>Role</th>
-                        <th>Email</th>
-                        <th>No KTP</th>
-                        <th>No HP</th>
-                        <th>Alamat</th>
+                        <th>Total Produk</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -48,53 +43,17 @@
 
     function showData() {
         $.ajax({
-            url: "{{ route('dashboard.manage-user.getAllData') }}",
+            url: "{{ route('dashboard.manage-product-category.getAllData') }}",
             type: "GET",
             dataType: "JSON",
             success: function (res) {
                 originalData = res.data;
 
-                var rotationTable = $('#user-table').DataTable({
+                var rotationTable = $('#product-category-table').DataTable({
                     data: originalData,
                     columns: [
-                        {
-                            data: 'foto',
-                            name: 'foto',
-                            render: function (data) {
-                                if (data == null)
-                                    return `
-                                        -
-                                    `;
-                                else
-                                    return `
-                                        <img src="/assets/imgs/user/${data}" class="img-fluid border border-2 border-primary rounded w-40 h-50" alt="">
-                                    `;
-                            }
-                        },
                         {data: 'nama', name: 'nama'},
-                        {data: 'role', name: 'role'},
-                        {data: 'email', name: 'email'},
-                        {
-                            data: 'no_ktp',
-                            name: 'no_ktp',
-                            render: function (data) {
-                                if (data == null)
-                                    return '-';
-                                else
-                                    return data;
-                            }
-                        },
-                        {
-                            data: 'no_hp',
-                            name: 'no_hp',
-                            render: function (data) {
-                                if (data == null)
-                                    return '-';
-                                else
-                                    return data;
-                            }
-                        },
-                        {data: 'alamat', name: 'alamat'},
+                        {data: 'total', name: 'total'},
                         {
                             data: null,
                             render: function (data, type, row) {
@@ -116,7 +75,7 @@
     }
 
     function editRow(id) {
-        window.location.href = `{{ route('dashboard.manage-user.update', 'id') }}`.replace('id', id);
+        window.location.href = `{{ route('dashboard.manage-product-category.update', 'id') }}`.replace('id', id);
     }
 
     function hapusRow(id) {
@@ -133,7 +92,7 @@
             if (result.isConfirmed) {
                 $.ajax({
                     type: 'DELETE',
-                    url: `{{ route('dashboard.manage-user.delete', ['id' => 'id']) }}`.replace('id', id),
+                    url: `{{ route('dashboard.manage-product-category.delete', ['id' => 'id']) }}`.replace('id', id),
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },

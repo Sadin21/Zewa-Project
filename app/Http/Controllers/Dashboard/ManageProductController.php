@@ -24,14 +24,18 @@ class ManageProductController extends Controller
     {
         $limit = $request->limit;
         $logedUserId = $request->query('logedUserId');
+        $logedUserRole = $request->query('logedUserRole');
 
         $products = DB::table('products')
                     ->join('product_categories', 'products.category_id', '=', 'product_categories.id')
                     ->join('users', 'products.pemilik_id', '=', 'users.id')
-                    ->where('products.pemilik_id', $logedUserId)
                     ->select('products.id', 'product_categories.nama as category', 'products.kode', 'users.nama as pemilik', 'products.nama', 'products.harga', 'products.tersewakan', 'products.stok', 'products.foto', 'products.deskripsi', 'products.created_at', 'products.updated_at');
 
         if ($limit && is_numeric($limit)) $products->limit($limit);
+
+        if ($logedUserRole !== '1') {
+            $products->where('products.pemilik_id', $logedUserId);
+        }
 
         return response()->json([
             'total' => $products->count(),

@@ -24,23 +24,28 @@
 
         <section class="container">
             <!-- Header -->
-            <div class="header d-flex py-3">
+            <div class="header d-flex py-3 fixed-top" style="padding-left: 7rem; padding-right: 7rem; background-color: white;">
                 <div class="col-md-3">
                     <h6 class="fs-18 poppins-semibold dark-green">Zewa</h6>
                 </div>
                 <div class="col-md-6 d-flex justify-content-center align-items-center">
                     <ul class="d-flex header" style="gap: 2rem;">
                         @if (Auth::user()->role_id === 1)
-                        <a class="fs-14 poppins-medium dark-green header-list">Akun</a>
+                        <a href="{{ route('dashboard.manage-user.index') }}" class="fs-14 poppins-medium dark-green header-list">Akun</a>
                         @endif
                         <a href="{{ route('dashboard.manage-product.index') }}" class="fs-14 poppins-medium dark-green header-list">Produk</a>
+                        @if (Auth::user()->role_id === 1)
+                        <a href="{{ route('dashboard.manage-product-category.index') }}" class="fs-14 poppins-medium dark-green header-list">Kategori Produk</a>
+                        @endif
                         <a href="{{ route('dashboard.manage-transaction.index') }}" class="fs-14 poppins-medium dark-green header-list">Transaksi</a>
                     </ul>
                 </div>
                 @if (Auth::user())
                 <div class="dropdown col-md-3 d-flex justify-content-end">
                     <div class="p-2 user-info d-flex align-items-center gap-2 cursor-pointer rounded dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        {{-- <img src="" alt="Profile" width="20px" height="20px" class="rounded-circle p-1"> --}}
+                        @if (Auth::user()->foto)
+                        <img src="{{ url('/assets/imgs/user/' . Auth::user()->foto) }}" alt="Profile" width="40px" height="40px" class="rounded-circle p-1">
+                        @endif
                         <div class="text-truncate f14 user-select-none">{{ Auth::user()->nama }}</div>
                     </div>
 
@@ -48,28 +53,12 @@
                         <div class="d-flex w-100 align-items-center gap-4 px-2 pb-2 mb-2 border-bottom">
                             <div class="flex-grow-1">
                                 <div class="text-truncate user-select-none fw-medium f20 poppins-medium">{{ Auth::user()->nama }}</div>
-                                {{-- <div class="d-flex gap-2 align-items-center mt-1">
-                                    @if ($user->email_verified_at)
-                                        <ion-icon name="checkmark-circle" class="text-success"></ion-icon>
-                                        <div class="text-success fw-medium f12">Verified</div>
-                                    @else
-                                        <ion-icon name="close-circle" class="text-danger"></ion-icon>
-                                        <div class="text-danger fw-medium f12">Unverified</div>
-                                    @endif
-                                </div> --}}
                             </div>
-                            {{-- <img src="" alt="Profile" width="50px" height="50px" class="rounded-circle p-1 flex-shrink-0"> --}}
                         </div>
 
                         <a class="w-100 dropdown-item d-flex align-items-center gap-2 p-2 mb-1 rounded cursor-pointer" href="{{ route('home.index') }}">
-                            {{-- <ion-icon name="settings" class="f20 flex-shrink-0"></ion-icon> --}}
                             <div class="user-select-none fw-medium flex-grow-1 poppins-medium">Customer Page</div>
                         </a>
-
-                        {{-- <a class="w-100 dropdown-item d-flex align-items-center gap-2 p-2 rounded cursor-pointer" href="{{ route('auth.logout') }}"> --}}
-                            {{-- <ion-icon name="log-out" class="f20 flex-shrink-0 text-danger"></ion-icon> --}}
-                            {{-- <div class="user-select-none fw-medium flex-grow-1 text-success">Keluar</div> --}}
-                        {{-- </a> --}}
 
                         <form action="{{ route('auth.logout') }}" method="POST">
                             @csrf
@@ -85,7 +74,7 @@
                 </div>
                 @endif
             </div>
-            <div class="mt-2">
+            <div class="" style="margin-top: 6rem;">
                 @yield('content')
             </div>
         </div>

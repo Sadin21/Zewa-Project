@@ -43,15 +43,11 @@
 <script>
 
     var logedUser = {!! json_encode(Auth::user()->id ?? null) !!};
-
-    // url: "{{ route('dashboard.product.getAllData') }}?logedUserId=" + logedUser,
+    var logedUserRole = {!! json_encode(Auth::user()->role_id ?? null) !!};
 
     function showData() {
-        // console.log(logedUser);
-        // $('#transaction-table').Datatable().destroy();
-
         $.ajax({
-            url: "{{ route('dashboard.manage-transaction.getAllData') }}?logedUserId=" + logedUser,
+            url: "{{ route('dashboard.manage-transaction.getAllData') }}?logedUserId=" + logedUser + "&logedUserRole=" + logedUserRole,
             type: "GET",
             dataType: "JSON",
             success: function (res) {

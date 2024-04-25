@@ -20,18 +20,12 @@
     {{-- select2 --}}
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
-    {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" /> --}}
-    {{-- <script src="{{ asset('vendor/sweetalerts/sweetalert2.all.min.js') }}"></script> --}}
-    {{-- <link rel="stylesheet" href="{{ asset('vendor/sweetalerts/sweetalert2.min.css') }}"> --}}
-
-    {{-- <script src="https://code.jquery.com/jquery-3.7.0.js"></script> --}}
-
   </head>
   <body>
 
     <section class="container">
         <!-- Header -->
-        <div class="header d-flex py-3">
+        <div class="header d-flex py-3 fixed-top" style="padding-left: 7rem; padding-right: 7rem; background-color: white;">
             <div class="col-md-3">
                 <h6 class="fs-18 poppins-semibold dark-green">Zewa</h6>
             </div>
@@ -39,9 +33,11 @@
                 <ul class="d-flex header" style="gap: 2rem;">
                     <a href="{{ route('home.index') }}" class="fs-14 poppins-medium dark-green header-list">Beranda</a>
                     <a href="{{ route('product.index') }}" class="fs-14 poppins-medium dark-green header-list">Produk</a>
+                    @if (Auth::user()->role_id == '3')
                     <a href="{{ route('cart.index') }}" class="fs-14 poppins-medium dark-green header-list">Keranjang</a>
                     <a href="{{ route('transaction.index') }}" class="fs-14 poppins-medium dark-green header-list">Transaksi</a>
-                    <a href="" class="fs-14 poppins-medium dark-green header-list">Tentang Kami</a>
+                    @endif
+                    {{-- <a href="" class="fs-14 poppins-medium dark-green header-list">Tentang Kami</a> --}}
                 </ul>
             </div>
             @if (Auth::user())
@@ -50,7 +46,9 @@
             </div> --}}
             <div class="dropdown col-md-3 d-flex justify-content-end">
                 <div class="p-2 user-info d-flex align-items-center gap-2 cursor-pointer rounded dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    {{-- <img src="" alt="Profile" width="20px" height="20px" class="rounded-circle p-1"> --}}
+                    @if (Auth::user()->foto)
+                    <img src="{{ url('/assets/imgs/user/' . Auth::user()->foto) }}" alt="Profile" width="40px" height="40px" class="rounded-circle p-1">
+                    @endif
                     <div class="text-truncate f14 user-select-none">{{ Auth::user()->nama }}</div>
                 </div>
 
@@ -58,17 +56,7 @@
                     <div class="d-flex w-100 align-items-center gap-4 px-2 pb-2 mb-2 border-bottom">
                         <div class="flex-grow-1">
                             <div class="text-truncate user-select-none fw-medium f20">{{ Auth::user()->nama }}</div>
-                            {{-- <div class="d-flex gap-2 align-items-center mt-1">
-                                @if ($user->email_verified_at)
-                                    <ion-icon name="checkmark-circle" class="text-success"></ion-icon>
-                                    <div class="text-success fw-medium f12">Verified</div>
-                                @else
-                                    <ion-icon name="close-circle" class="text-danger"></ion-icon>
-                                    <div class="text-danger fw-medium f12">Unverified</div>
-                                @endif
-                            </div> --}}
                         </div>
-                        {{-- <img src="" alt="Profile" width="50px" height="50px" class="rounded-circle p-1 flex-shrink-0"> --}}
                     </div>
 
                     @if (Auth::user()->role_id !== 3)
@@ -95,7 +83,7 @@
             </div>
             @endif
         </div>
-        <div class="mt-2">
+        <div class="" style="margin-top: 6rem;">
             @yield('content')
         </div>
     </div>
@@ -110,7 +98,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script> --}}
 
     @yield('script')
   </body>

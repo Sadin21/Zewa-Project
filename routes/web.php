@@ -10,6 +10,7 @@ use App\Http\Controllers\CostumerPage\TransactionController;
 use App\Http\Controllers\Dashboard\ManageUserController;
 use App\Http\Controllers\Dashboard\ManageProductController;
 use App\Http\Controllers\Dashboard\ManageTransactionController;
+use App\Http\Controllers\Dashboard\ManageProductCategoryController;
 
 
 /*
@@ -65,6 +66,8 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
 
     Route::controller(ManageUserController::class)->name('manage-user.')->prefix('manage-user')->group(function () {
         Route::get('/', 'index')->name('index');
+        Route::match(['get', 'post'], 'create', 'create')->name('create');
+        Route::match(['get', 'post'], '{id}', 'update')->name('update');
     });
 
     Route::controller(ManageProductController::class)->name('manage-product.')->prefix('manage-product')->group(function () {
@@ -75,5 +78,11 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
 
     Route::controller(ManageTransactionController::class)->name('manage-transaction.')->prefix('manage-transaction')->group(function () {
         Route::get('/', 'index')->name('index');
+    });
+
+    Route::controller(ManageProductCategoryController::class)->name('manage-product-category.')->prefix('manage-product-category')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::match(['get', 'post'], 'create', 'create')->name('create');
+        Route::match(['get', 'post'], '{id}', 'update')->name('update');
     });
 });
