@@ -32,7 +32,7 @@
                             <p class="mb-0 poppins-regular fs-12">Harga sewa mulai dari</p>
                             <p class="mb-0 poppins-medium fs-14">Rp {{number_format($p->harga,0,',','.')}}</p>
                         </div>
-                        <a href="#" class="btn poppins-medium text-white fs-14" style="background-color: #184A4B;">Lihat Detail</a>
+                        <a href="/product/detail/{{ $p->id }}}" class="btn poppins-medium text-white fs-14" style="background-color: #184A4B;">Lihat Detail</a>
                     </div>
                 </div>
             </div>

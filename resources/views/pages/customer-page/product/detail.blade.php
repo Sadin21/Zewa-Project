@@ -22,8 +22,8 @@
             <img src="{{ url('/assets/imgs/product/' . $product->foto) }}" class="card-img-top" style="max-height: 500px" alt="...">
             <div class="border border-2 p-2 w-100 mt-4 d-flex gap-4">
                 <p class="mb-0 poppins-medium fs-14">Tanya seputar produk</p>
-                <a href="">
-                    <i class="fa-brands fa-whatsapp fs-18"></i>
+                <a href="https://www.instagram.com/zewa.official?igsh=MTF4YnkyZTkzMmtrbw==">
+                    <i class="fa-brands fa-instagram fs-18"></i>
                 </a>
             </div>
         </div>
