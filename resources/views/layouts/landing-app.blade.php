@@ -33,7 +33,7 @@
                 <ul class="d-flex header" style="gap: 2rem;">
                     <a href="{{ route('home.index') }}" class="fs-14 poppins-medium dark-green header-list">Beranda</a>
                     <a href="{{ route('product.index') }}" class="fs-14 poppins-medium dark-green header-list">Produk</a>
-                    @if (Auth::user()->role_id == '3')
+                    @if (Auth::user() && Auth::user()->role_id == '3')
                     <a href="{{ route('cart.index') }}" class="fs-14 poppins-medium dark-green header-list">Keranjang</a>
                     <a href="{{ route('transaction.index') }}" class="fs-14 poppins-medium dark-green header-list">Transaksi</a>
                     @endif
@@ -41,9 +41,6 @@
                 </ul>
             </div>
             @if (Auth::user())
-            {{-- <div class="col-md-3 d-flex justify-content-end">
-                <h6 class="fs-18 poppins-semibold dark-green">Halo, {{ Auth::user()->nama }}</h6>
-            </div> --}}
             <div class="dropdown col-md-3 d-flex justify-content-end">
                 <div class="p-2 user-info d-flex align-items-center gap-2 cursor-pointer rounded dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                     @if (Auth::user()->foto)

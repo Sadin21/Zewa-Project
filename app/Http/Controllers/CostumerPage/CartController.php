@@ -32,7 +32,8 @@ class CartController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $request->validate(
+            [
             'product_id' => 'required|exists:products,id',
             'user_id' => 'required|exists:users,id',
             'waktu_sewa' => 'required|date',
@@ -40,7 +41,23 @@ class CartController extends Controller
             'status_ambil' => 'required|string',
             'sub_total' => 'required|numeric',
             'alamat' => 'nullable|string'
-        ]);
+            ],
+            [
+                'product_id.required' => 'Produk wajib diisi',
+                'product_id.exists' => 'Produk tidak ditemukan',
+                'user_id.exists' => 'Anda harus login terlebih dahulu',
+                'user_id.required' => 'User wajib diisi',
+                'waktu_sewa.required' => 'Waktu sewa wajib diisi',
+                'waktu_sewa.date' => 'Waktu sewa harus berupa tanggal',
+                'paket_sewa.required' => 'Paket sewa wajib diisi',
+                'paket_sewa.numeric' => 'Paket sewa harus berupa angka',
+                'status_ambil.required' => 'Status pengambilan wajib diisi',
+                'status_ambil.string' => 'Status pengambilan harus berupa string',
+                'sub_total.required' => 'Sub total wajib diisi',
+                'sub_total.numeric' => 'Sub total harus berupa angka',
+                'alamat.string' => 'Alamat harus berupa string'
+            ]
+        );
 
         $product = Product::findOrFail($request->product_id);
 

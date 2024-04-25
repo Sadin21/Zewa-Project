@@ -32,6 +32,12 @@ class TransactionController extends Controller
     {
         $data = $request->all();
 
+        if (auth()->user() === null) {
+            return response()->json([
+                'message' => 'Anda harus login terlebih dahulu'
+            ], 400);
+        }
+
         $selectedProduct = $data['selectedProduct'];
         $grandTotal = $data['grandTotal'];
         $totalQty = $data['totalQty'];
@@ -113,7 +119,7 @@ class TransactionController extends Controller
                     TransactionLine::create([
                         'hdr_id' => $transaction_hdr->id,
                         'product_id' => $product->id,
-                        'cart_id' => $selectedProduct['cartId'],
+                        'cart_id' => isset($selectedProduct['cartId']) ? $selectedProduct['cartId'] : null,
                         'sub_total' => $selectedProduct['subTotal'],
                         'waktu_sewa' => $selectedProduct['waktuSewa'],
                         'waktu_pengembalian' => $selectedProduct['waktuPengembalian'],
