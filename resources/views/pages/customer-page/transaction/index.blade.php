@@ -23,6 +23,7 @@
                 <th scope="col">Waktu Sewa</th>
                 <th scope="col">Waktu Pengembalian</th>
                 <th scope="col">Subtotal</th>
+                <th scope="col">Invoice</th>
               </tr>
             </thead>
             <tbody>
@@ -41,6 +42,9 @@
                     <td class="align-middle card-title poppins-medium fs-18 waktuSewa" id="waktuSewa-{{ $d->waktu_sewa }}">{{ $d->waktu_sewa }}</td>
                     <td class="align-middle card-title poppins-medium fs-18 waktuPengembalian" id="waktuPengembalian-{{ $d->waktu_pengembalian }}">{{ $d->waktu_pengembalian }}</td>
                     <td class="align-middle card-title poppins-medium fs-18 subTotal" id="subtotal-{{ $d->sub_total }}">{{ $d->sub_total }}</td>
+                    <td class="align-middle card-title poppins-medium fs-18 subTotal" id="subtotal-{{ $d->id }}">
+                        <a href="{{ route('invoice.downloadInvoice', ['id' => $d->hdr_id]) }}"><i class="fa-solid fa-download"></i></a>
+                    </td>
                 </tr>
                 @endforeach
             </tbody>

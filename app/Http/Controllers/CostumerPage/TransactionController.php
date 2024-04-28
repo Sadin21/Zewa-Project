@@ -21,7 +21,7 @@ class TransactionController extends Controller
         $data = DB::table('transaction_lines')
             ->join('transaction_hdrs', 'transaction_lines.hdr_id', '=', 'transaction_hdrs.id')
             ->join('products', 'transaction_lines.product_id', '=', 'products.id')
-            ->select('transaction_lines.*', 'transaction_hdrs.no_transaksi', 'products.nama', 'products.kode', 'products.foto')
+            ->select('transaction_lines.*', 'transaction_hdrs.id as hdr_id', 'transaction_hdrs.no_transaksi', 'products.nama', 'products.kode', 'products.foto')
             ->where('transaction_hdrs.user_id', Auth::user()->id)
             ->get();
 
@@ -81,9 +81,44 @@ class TransactionController extends Controller
             $transaction_hdr->snap_token = $snapToken;
             $transaction_hdr->save();
 
+            $now = date('Y-m-d H:i:s');
+
+            // store to database
             if ($directPayment !== '1') {
                 foreach ($selectedProduct as $p) {
                     $product = Product::where('nama', $p['productName'])->first();
+
+                    if ($p['statusAmbil'] === 'antar' && $p['alamat'] === null) {
+                        return response()->json([
+                            'message' => 'Alamat harus diisi'
+                        ], 400);
+                    }
+
+                    if ($product->stok < 1) {
+                        return response()->json([
+                            'message' => 'Stok produk tidak mencukupi'
+                        ], 400);
+                    }
+
+
+                    if (auth()->user()->role_id != '3') {
+                        return response()->json([
+                            'message' => 'Anda tidak bisa menyewa produk'
+                        ], 400);
+                    }
+
+                    if ($p['waktuSewa'] < $now) {
+                        return response()->json([
+                            'message' => 'Waktu sewa tidak valid'
+                        ], 400);
+                    }
+
+                    if ($p['waktuPengembalian'] < $now) {
+                        return response()->json([
+                            'message' => 'Waktu pengembalian tidak valid'
+                        ], 400);
+                    }
+
                     if ($product) {
                         TransactionLine::create([
                             'hdr_id' => $transaction_hdr->id,
@@ -99,9 +134,6 @@ class TransactionController extends Controller
                 }
             } else {
                 $product = Product::findOrFail($selectedProduct['productId']);
-                $product->stok = $product->stok - intval($totalQty);
-                $product->tersewakan = $product->tersewakan + intval($totalQty);
-                $product->save();
 
                 if ($product->stok < 1) {
                     return response()->json([
@@ -114,6 +146,11 @@ class TransactionController extends Controller
                         'message' => 'Anda tidak bisa menyewa produk'
                     ], 400);
                 }
+
+                $product->stok = $product->stok - 1;
+                $product->tersewakan = $product->tersewakan + 1;
+                // $product->tersewakan = $product->tersewakan + intval($totalQty);
+                $product->save();
 
                 if ($product) {
                     TransactionLine::create([
@@ -157,5 +194,4 @@ class TransactionController extends Controller
 
         return redirect()->route('transaction.index')->with('success', 'Pembayaran berhasil');
     }
-
 }

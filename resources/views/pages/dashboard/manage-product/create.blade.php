@@ -31,9 +31,9 @@
                             <label class="form-label fs-14 poppins-medium dark-green">Kode</label>
                             <div class="d-flex gap-2">
                                 <input name="kode" type="text" required class="form-control" id="kode" aria-describedby="emailHelp" value="{{ isset($product) ? $product->kode : '' }}"  placeholder="Tulis kode barang">
-                                <button type="button" class="btn btn-outline-primary btn-sm" onclick="generateCode()">
+                                {{-- <button type="button" class="btn btn-outline-primary btn-sm" onclick="generateCode()">
                                     <i class="fa-solid fa-play"></i>
-                                </button>
+                                </button> --}}
                             </div>
                         </div>
                     </div>

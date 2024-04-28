@@ -95,7 +95,7 @@
                 <div class="col border border-2 rounded-0 py-4">
                     <div class="d-flex gap-2">
                         <h5 class="poppins-medium dark-green mb-3">Pilih Tipe Sewa</h5>
-                        <h6 class="poppins-regular fs-14"><span class="badge text-bg-secondary">Isi jika ambil sendiri</span></h6>
+                        <h6 class="poppins-regular fs-14"><span class="badge text-bg-secondary">Isi jika di antar</span></h6>
                     </div>
                     <h5 class="poppins-medium dark-green mb-3">Alamat</h5>
                     <div class="form-floating">
@@ -123,6 +123,7 @@
     <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script>
     <script>
         var totalPrice = 0;
+        const dateNow = new Date();
 
         document.getElementById('package-sewa').addEventListener('change', function() {
             var duration = parseInt(this.value);
@@ -143,6 +144,33 @@
                 const selectedTime = document.getElementById('time-sewa').value;
                 const selectedStatus = document.getElementById('status-sewa').value;
                 const selectedAddress = document.getElementById('address-sewa').value;
+
+                if (selectedDate < dateNow.toISOString().slice(0, 10)) {
+                    Toast.fire({
+                        icon: 'error',
+                        text: 'Tanggal sewa tidak boleh kurang dari hari ini!'
+                    });
+
+                    return false;
+                }
+
+                if (selectedTime < dateNow.toISOString().slice(11, 16) || selectedTime == '') {
+                    Toast.fire({
+                        icon: 'error',
+                        text: 'Waktu sewa tidak valid!'
+                    });
+
+                    return false;
+                }
+
+                if (selectedStatus == 'antar' && selectedAddress == '') {
+                    Toast.fire({
+                        icon: 'error',
+                        text: 'Alamat pengiriman tidak boleh kosong!'
+                    });
+
+                    return false;
+                }
 
                 const productId = {{ $product->id }};
                 const userId = {{ auth()->user()? auth()->user()->id : 0 }};
@@ -249,6 +277,7 @@
                         snap.pay(res.snapToken, {
                             onSuccess: function(result){
                                 var successUrl = "{{ route('transaction.success') }}?transactionHdrId=" + res.transactionHdrId;
+                                var downloadPdf = "{{ route('invoice.downloadInvoice') }}?id=" + res.transactionHdrId;
                                 window.location.href = successUrl;
                             },
                             onPending: function(result){

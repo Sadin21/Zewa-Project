@@ -20,11 +20,11 @@ class CartController extends Controller
             ->join('products', 'carts.product_id', '=', 'products.id')
             ->where('carts.user_id', '=', Auth::user()->id)
             ->select('carts.*', 'products.nama', 'products.kode', 'products.foto', 'products.id as productId')
-            // ->whereNotExists(function ($query) {
-            //     $query->select(DB::raw(1))
-            //             ->from('transaction_lines')
-            //             ->whereColumn('carts.id', '!=', 'transaction_lines.cart_id');
-            // })
+            ->whereNotExists(function ($query) {
+                $query->select(DB::raw(1))
+                        ->from('transaction_lines')
+                        ->whereColumn('carts.id', '!=', 'transaction_lines.cart_id');
+            })
             ->get();
 
         return view('pages.customer-page.cart.index', compact('data'));

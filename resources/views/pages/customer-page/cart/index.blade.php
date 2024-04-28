@@ -14,6 +14,8 @@
         </div>
     </div>
 
+    @if ($data != null && count($data) > 0)
+
     <div class="row">
         <div class="col">
             <table class="table">
@@ -79,6 +81,10 @@
             </div>
         </div>
     </div>
+    @else
+    <h5>tidak ada data</h5>
+    @endif
+
 </section>
 @endsection
 

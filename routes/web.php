@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\CostumerPage\HomeController;
 use App\Http\Controllers\CostumerPage\ProfileController;
 use App\Http\Controllers\CostumerPage\ProductController;
@@ -56,6 +57,10 @@ Route::controller(TransactionController::class)->name('transaction.')->prefix('t
 
 Route::controller(ProfileController::class)->name('profile.')->prefix('profile')->group(function () {
     Route::match(['get', 'post'], 'update', 'updateProfile')->name('update');
+});
+
+Route::controller(InvoiceController::class)->name('invoice.')->prefix('invoice')->group(function () {
+    Route::get('/download-invoice', 'downloadInvoice')->name('downloadInvoice');
 });
 
 
