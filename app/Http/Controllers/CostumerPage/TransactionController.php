@@ -107,17 +107,17 @@ class TransactionController extends Controller
                         ], 400);
                     }
 
-                    if ($p['waktuSewa'] < $now) {
-                        return response()->json([
-                            'message' => 'Waktu sewa tidak valid'
-                        ], 400);
-                    }
+                    // if ($p['waktuSewa'] < $now) {
+                    //     return response()->json([
+                    //         'message' => 'Waktu sewa tidak valid'
+                    //     ], 400);
+                    // }
 
-                    if ($p['waktuPengembalian'] < $now) {
-                        return response()->json([
-                            'message' => 'Waktu pengembalian tidak valid'
-                        ], 400);
-                    }
+                    // if ($p['waktuPengembalian'] < $now) {
+                    //     return response()->json([
+                    //         'message' => 'Waktu pengembalian tidak valid'
+                    //     ], 400);
+                    // }
 
                     if ($product) {
                         TransactionLine::create([

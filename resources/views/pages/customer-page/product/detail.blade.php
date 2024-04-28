@@ -125,6 +125,12 @@
         var totalPrice = 0;
         const dateNow = new Date();
 
+        hoursNow = dateNow.getHours();
+        minutesNow = dateNow.getMinutes();
+        secondsNow = dateNow.getSeconds();
+
+        var datetimeNow = dateNow.toISOString().slice(0, 10) + 'T' + hoursNow + ':' + minutesNow + ':' + secondsNow;
+
         document.getElementById('package-sewa').addEventListener('change', function() {
             var duration = parseInt(this.value);
             var productPrice = {{ $product->harga }}
@@ -145,19 +151,12 @@
                 const selectedStatus = document.getElementById('status-sewa').value;
                 const selectedAddress = document.getElementById('address-sewa').value;
 
-                if (selectedDate < dateNow.toISOString().slice(0, 10)) {
+                const selectedDatetime = selectedDate + 'T' + selectedTime;
+
+                if (selectedDatetime < datetimeNow || selectedDatetime == '') {
                     Toast.fire({
                         icon: 'error',
-                        text: 'Tanggal sewa tidak boleh kurang dari hari ini!'
-                    });
-
-                    return false;
-                }
-
-                if (selectedTime < dateNow.toISOString().slice(11, 16) || selectedTime == '') {
-                    Toast.fire({
-                        icon: 'error',
-                        text: 'Waktu sewa tidak valid!'
+                        text: 'Waktu sewa tidak boleh kurang dari hari ini!'
                     });
 
                     return false;
