@@ -22,11 +22,11 @@ class ProductCategoryController extends Controller
                             }
                         });
 
-        if ($keyword) {
-            $data->where(function ($d) use ($keyword) {
-                $d->where('nama', 'LIKE', '%' . $keyword . '%');
-            });
-        }
+        // if ($keyword) {
+        //     $data->where(function ($d) use ($keyword) {
+        //         $d->where('nama', 'LIKE', '%' . $keyword . '%');
+        //     });
+        // }
 
         return response()->json([
             'totalRecords' => $data->count(),

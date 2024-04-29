@@ -39,7 +39,11 @@
                 </div>
                 <div class="col-4">
                     <h5 class="poppins-medium dark-green mt-4">{{ $product->stok }}</h5>
-                    <h6 class="poppins-regular fs-14">Stok barang tersedia</h6>
+                    <h6 class="poppins-regular fs-14">Stok tersedia</h6>
+                </div>
+                <div class="col-2">
+                    <h5 class="poppins-medium dark-green mt-4">{{ $product->tersewakan }}</h5>
+                    <h6 class="poppins-regular fs-14">Tersewa</h6>
                 </div>
             </div>
             <div style="width: 80%" class="pb-4 row">
