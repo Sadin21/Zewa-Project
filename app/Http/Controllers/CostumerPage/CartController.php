@@ -93,11 +93,6 @@ class CartController extends Controller
             $cart->alamat = $request->alamat;
             $cart->save();
 
-            $product = Product::findOrFail($request->product_id);
-            $product->stok = $product->stok - 1;
-            $product->tersewakan = $product->tersewakan + 1;
-            $product->save();
-
             if ($request->alamat) {
                 $user = User::findOrFail($request->user_id);
                 $user->alamat = $request->alamat;

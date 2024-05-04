@@ -186,7 +186,15 @@
                         });
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
-                        console.error("Error:", textStatus, errorThrown);
+                        const response = jqXHR.responseJSON;
+                        if (response) {
+                            Toast.fire({
+                                icon: 'error',
+                                text: response.message
+                            });
+                        } else {
+                            console.error("Error:", textStatus, errorThrown);
+                        }
                     }
                 });
             })
