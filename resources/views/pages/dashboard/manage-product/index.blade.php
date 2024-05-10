@@ -107,7 +107,6 @@
             dataType: "JSON",
             success: function (res) {
                 originalData = res.data;
-                // console.log(originalData);
 
                 var rotationTable = $('#product-table').DataTable({
                     data: originalData,

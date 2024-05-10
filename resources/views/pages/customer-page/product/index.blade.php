@@ -36,14 +36,21 @@
                 success: function(response) {
                     if (response.message === 'Success get data' && response.totalRecords > 0) {
                         response.data.forEach(function(product) {
+                            var productName = product.nama
+                            var maxNameLength = 25;
+
+                            if (productName.length > maxNameLength ) {
+                                productName = productName.substring(0, maxNameLength) + "...";
+                            }
+
                             var productHtml = `
                                 <div class="col-3 mb-4">
                                     <div class="card">
                                         <img src="/assets/imgs/product/${product.foto}" class="card-img-top" style="max-height: 200px" alt="...">
                                         <div class="card-body" style="height: 230px">
                                             <div class="d-flex justify-content-between"  style="height: 50px">
-                                                <h5 class="card-title poppins-medium fs-18">${product.nama}</h5>
-                                                <p class="mb-0 poppins-medium fs-12">${product.category}</p>
+                                                <h5 class="card-title poppins-medium fs-18">${productName}</h5>
+                                                <p class="mb-0 poppins-medium fs-10">${product.category}</p>
                                             </div>
                                             <div class="mb-3">
                                                 <p class="mb-0 poppins-regular fs-12">Harga sewa mulai dari</p>
@@ -100,6 +107,7 @@
 
         $productCategoryNameSelect.select2({
             placeholder: 'Cari Kategori Produk',
+            allowClear: true,
             ajax: {
                 url: function (params) {
                     return 'http://127.0.0.1:8000/api/product-category';

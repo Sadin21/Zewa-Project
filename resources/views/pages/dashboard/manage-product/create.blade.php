@@ -21,7 +21,8 @@
                             <label class="form-label fs-14 poppins-medium dark-green">Kategori</label>
                             <select class="form-select" name="category_id">
                                 @foreach ($categories as $c)
-                                    <option value="{{ $c->id }}" {{ $c->nama }} {{ isset($product) && $product->category_id === $c->id ? 'selected' : '' }}>
+                                    <option value="{{ $c->id }}" {{ (old('category_id') == $c->id || (isset($product) && $product->category_id === $c->id)) ? 'selected' : '' }}>
+                                        {{-- <option value="{{ $c->id }}" {{ $c->nama }} {{ isset($product) && $product->category_id === $c->id ? 'selected' : '' }}> --}}
                                         {{ $c->nama }}
                                     </option>
                                 @endforeach
@@ -30,10 +31,10 @@
                         <div class="mb-3">
                             <label class="form-label fs-14 poppins-medium dark-green">Kode</label>
                             <div class="d-flex gap-2">
-                                <input name="kode" type="text" required class="form-control" id="kode" aria-describedby="emailHelp" value="{{ isset($product) ? $product->kode : '' }}"  placeholder="Tulis kode barang">
-                                {{-- <button type="button" class="btn btn-outline-primary btn-sm" onclick="generateCode()">
+                                <input name="kode" type="text" required class="form-control" id="kode" aria-describedby="emailHelp" value="{{ old('kode', isset($product) ? $product->kode : '') }}"  placeholder="Tulis kode barang">
+                                <button type="button" class="btn btn-outline-primary btn-sm" onclick="generateCode()">
                                     <i class="fa-solid fa-play"></i>
-                                </button> --}}
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -45,23 +46,23 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label fs-14 poppins-medium dark-green">Harga</label>
-                            <input name="harga" type="number" class="form-control" required value="{{ isset($product) ? $product->harga : '' }}"   placeholder="Tulis harga barang">
+                            <input name="harga" type="number" class="form-control" required value="{{ old('harga', isset($product) ? $product->harga : '') }}"   placeholder="Tulis harga barang">
                         </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label fs-14 poppins-medium dark-green">Nama</label>
-                        <input name="nama" type="text" class="form-control" aria-describedby="emailHelp" required value="{{ isset($product) ? $product->nama : '' }}"   placeholder="Tulis nama barang">
+                        <input name="nama" type="text" class="form-control" aria-describedby="emailHelp" required value="{{ old('nama', isset($product) ? $product->nama : '') }}"   placeholder="Tulis nama barang">
                     </div>
                     <div class="col">
                         <div class="mb-3">
                             <label class="form-label fs-14 poppins-medium dark-green">Deskripsi</label>
-                            <textarea class="form-control" name="deskripsi" placeholder="Tuliskan deskripsi">{{ isset($product) ? $product->deskripsi : '' }}</textarea>
+                            <textarea class="form-control" name="deskripsi" placeholder="Tuliskan deskripsi">{{ old('deskripsi', isset($product) ? $product->deskripsi : '') }}</textarea>
                         </div>
                     </div>
                     <div class="col">
                         <div class="mb-3">
                             <label class="form-label fs-14 poppins-medium dark-green">Stok</label>
-                            <input name="stok" type="number" class="form-control" aria-describedby="emailHelp" required value="{{ isset($product) ? $product->stok : '0' }}"   placeholder="">
+                            <input name="stok" type="number" class="form-control" aria-describedby="emailHelp" required value="{{ old('stok', isset($product) ? $product->stok : '0') }}"   placeholder="">
                         </div>
                     </div>
                     <div class="mb-3">

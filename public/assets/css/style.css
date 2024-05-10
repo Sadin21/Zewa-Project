@@ -60,6 +60,10 @@
     font-size: 12px;
 }
 
+.fs-10 {
+    font-size: 10px;
+}
+
 ul.header {
     list-style-type: none;
 }

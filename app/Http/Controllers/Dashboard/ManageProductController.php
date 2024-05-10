@@ -29,6 +29,7 @@ class ManageProductController extends Controller
         $products = DB::table('products')
                     ->join('product_categories', 'products.category_id', '=', 'product_categories.id')
                     ->join('users', 'products.pemilik_id', '=', 'users.id')
+                    // ->where('products.pemilik_id', $logedUserId)
                     ->select('products.id', 'product_categories.nama as category', 'products.kode', 'users.nama as pemilik', 'products.nama', 'products.harga', 'products.tersewakan', 'products.stok', 'products.foto', 'products.deskripsi', 'products.created_at', 'products.updated_at');
 
         if ($limit && is_numeric($limit)) $products->limit($limit);
@@ -61,7 +62,7 @@ class ManageProductController extends Controller
             'harga' => 'required|numeric',
             'deskripsi' => 'nullable|string',
             'stok' => 'nullable|numeric',
-            'foto' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'foto' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048'
         ], [
             'category_id.required' => 'Kategori produk wajib diisi',
             'category_id.numeric' => 'Kategori produk harus berupa angka',
@@ -118,7 +119,7 @@ class ManageProductController extends Controller
             'harga' => 'required|numeric',
             'deskripsi' => 'nullable|string',
             'stok' => 'nullable|numeric',
-            'foto' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'foto' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048'
         ], [
             'category_id.required' => 'Kategori produk wajib diisi',
             'category_id.numeric' => 'Kategori produk harus berupa angka',
