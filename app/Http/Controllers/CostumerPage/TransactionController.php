@@ -107,30 +107,20 @@ class TransactionController extends Controller
                         ], 400);
                     }
 
-                    if ($p['waktuSewa'] < $now) {
-                        return response()->json([
-                            'message' => 'Waktu sewa tidak valid'
-                        ], 400);
-                    }
+                    $product->stok = $product->stok - 1;
+                    $product->tersewakan = $product->tersewakan + 1;
+                    $product->save();
 
-                    if ($p['waktuPengembalian'] < $now) {
-                        return response()->json([
-                            'message' => 'Waktu pengembalian tidak valid'
-                        ], 400);
-                    }
-
-                    if ($product) {
-                        TransactionLine::create([
-                            'hdr_id' => $transaction_hdr->id,
-                            'product_id' => $product->id,
-                            'cart_id' => $p['cartId'],
-                            'sub_total' => $p['subTotal'],
-                            'waktu_sewa' => $p['waktuSewa'],
-                            'waktu_pengembalian' => $p['waktuPengembalian'],
-                            'status_ambil' => $p['statusAmbil'],
-                            'alamat' => $p['alamat']? $p['alamat'] : null,
-                        ]);
-                    }
+                    TransactionLine::create([
+                        'hdr_id' => $transaction_hdr->id,
+                        'product_id' => $product->id,
+                        'cart_id' => $p['cartId'],
+                        'sub_total' => $p['subTotal'],
+                        'waktu_sewa' => $p['waktuSewa'],
+                        'waktu_pengembalian' => $p['waktuPengembalian'],
+                        'status_ambil' => $p['statusAmbil'],
+                        'alamat' => $p['alamat']? $p['alamat'] : null,
+                    ]);
                 }
             } else {
                 $product = Product::findOrFail($selectedProduct['productId']);

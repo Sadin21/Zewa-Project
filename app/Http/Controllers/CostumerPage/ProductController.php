@@ -28,13 +28,13 @@ class ProductController extends Controller
         $order = $request->order;
         $orderBy = $request->orderBy;
         $nama = $request->nama?? 0;
-        $category = $request->category;
+        $category = $request->category?? 0;
         $pemilik = $request->pemilik?? 0;
 
         $product = DB::table('products')
                     ->join('product_categories', 'products.category_id', '=', 'product_categories.id')
                     ->join('users', 'products.pemilik_id', '=', 'users.id')
-                    ->select('products.id', 'products.nama', 'products.harga', 'products.foto', 'products.stok', 'products.deskripsi', 'product_categories.nama as category', 'users.nama as pemilik')
+                    ->select('products.id', 'products.nama', 'products.harga', 'products.foto', 'products.stok', 'products.deskripsi', 'products.tersewakan', 'product_categories.nama as category', 'users.nama as pemilik')
                     ->where(function ($query) use ($nama) {
                         if ($nama) {
                             $query->where('products.nama', 'like', '%'.$nama.'%');
@@ -67,7 +67,7 @@ class ProductController extends Controller
         $product = DB::table('products')
                     ->join('product_categories', 'products.category_id', '=', 'product_categories.id')
                     ->join('users', 'products.pemilik_id', '=', 'users.id')
-                    ->select('products.id', 'products.nama', 'products.harga', 'products.foto', 'products.stok', 'products.deskripsi', 'product_categories.nama as category', 'users.nama as pemilik')
+                    ->select('products.id', 'products.nama', 'products.harga', 'products.foto', 'products.stok', 'products.deskripsi', 'products.tersewakan', 'product_categories.nama as category', 'users.nama as pemilik')
                     ->where('products.id', $id)
                     ->first();
 

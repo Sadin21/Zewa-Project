@@ -28,9 +28,13 @@
                     <img src="{{ url('/assets/imgs/product/' . $p->foto) }}" class="card-img-top" style="max-height: 200px" alt="...">
                     <div class="card-body">
                         <h5 class="card-title poppins-medium fs-18">{{ $p->nama }}</h5>
-                        <div class="my-3">
+                        <div class="mb-3">
                             <p class="mb-0 poppins-regular fs-12">Harga sewa mulai dari</p>
                             <p class="mb-0 poppins-medium fs-14">Rp {{number_format($p->harga,0,',','.')}}</p>
+                        </div>
+                        <div class="mb-3">
+                            <p class="mb-0 poppins-regular fs-12">Tersewakan</p>
+                            <p class="mb-0 poppins-medium fs-14">{{ $p->tersewakan }}</p>
                         </div>
                         <a href="/product/detail/{{ $p->id }}}" class="btn poppins-medium text-white fs-14" style="background-color: #184A4B;">Lihat Detail</a>
                     </div>
