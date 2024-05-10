@@ -130,6 +130,7 @@
 
         $productNameSelect.select2({
             placeholder: 'Cari Produk',
+            allowClear: true,
             ajax: {
                 url: function (params) {
                     return 'http://127.0.0.1:8000/api/product?category=' + selectedCategory;
