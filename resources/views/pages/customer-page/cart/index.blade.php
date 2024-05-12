@@ -69,14 +69,14 @@
                         <p class="mb-0 poppins-medium fs-14" id="subtotal-for-pay">Rp 0</p>
                     </div>
                 </div>
-                <div class="d-flex justify-content-between mt-2">
+                {{-- <div class="d-flex justify-content-between mt-2">
                     <div>
                         <p class="mb-0 poppins-medium fs-14">Produk</p>
                     </div>
                     <div class="text-end">
                         <p class="mb-0 poppins-medium fs-14" id="product-for-pay">-</p>
                     </div>
-                </div>
+                </div> --}}
                 <a href="" class="btn poppins-medium text-white fs-14 w-100 mt-4" style="background-color: #184A4B;" id="buttonPay">Bayar</a>
             </div>
         </div>
