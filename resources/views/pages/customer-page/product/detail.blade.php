@@ -65,8 +65,11 @@
                         <select class="form-select" aria-label="Default select example" id="package-sewa">
                             <option selected>Pilih hari</option>
                             <option value="1">1</option>
+                            <option value="2">2</option>
                             <option value="3">3</option>
+                            <option value="4">4</option>
                             <option value="5">5</option>
+                            <option value="6">6</option>
                             <option value="7">7</option>
                         </select>
                         <input type="text" aria-label="price" class="form-control" id="price-sewa">

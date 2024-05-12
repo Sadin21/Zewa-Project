@@ -15,7 +15,7 @@
     <div class="d-flex justify-content-between">
         <div>
             <h3 class="poppins-semibold dark-green">Produk Terbaru</h3>
-            <h6 class="poppins-medium fs-14">This week splecial products from Partners</h6>
+            <h6 class="poppins-medium fs-14">This week special products from Partners</h6>
         </div>
         <div>
             <a href="{{ route('product.index') }}" class="btn poppins-medium text-white fs-14" style="background-color: #184A4B;">Lihat Produk</a>
@@ -48,7 +48,7 @@
     <div class="d-flex justify-content-between">
         <div>
             <h3 class="poppins-semibold dark-green">Produk Kategori</h3>
-            <h6 class="poppins-medium fs-14">This week splecial products from Partners</h6>
+            <h6 class="poppins-medium fs-14">This week special products from Partners</h6>
         </div>
         <div>
             {{-- <a href="#" class="btn poppins-medium text-white fs-14" style="background-color: #184A4B;">Lihat Detail</a> --}}
@@ -73,7 +73,7 @@
 </section>
 
 <section class="" style="margin-top: 5rem;">
-    <div class="d-flex justify-content-center">
+    <div class="d-flex justify-content-center mb-3">
         <div class="w-50">
             <div class="text-center">
                 {{-- <h3 class="poppins-semibold dark-green">Tentang Kami</h3> --}}
@@ -102,6 +102,16 @@
                     </ul>
                 </div>
             </div>
+        </div>
+    </div>
+</section>
+
+<section class="d-flex justify-content-center" style="margin-top: 5rem;">
+    <div class="">
+        <h3 class="poppins-semibold dark-green">Tertarik Menyewakan Produk Anda?</h3>
+        <div class="d-flex gap-3 justify-content-center">
+            <i class="fa-brands fa-whatsapp fs-22"></i>
+            <h5 class="poppins-regular mb-0">0858 5104 1585</h5>
         </div>
     </div>
 </section>
