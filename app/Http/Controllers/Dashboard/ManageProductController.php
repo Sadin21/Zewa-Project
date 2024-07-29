@@ -26,16 +26,16 @@ class ManageProductController extends Controller
         $logedUserId = $request->query('logedUserId');
         $logedUserRole = $request->query('logedUserRole');
 
-        $products = DB::table('products')
-                    ->join('product_categories', 'products.category_id', '=', 'product_categories.id')
-                    ->join('users', 'products.pemilik_id', '=', 'users.id')
-                    // ->where('products.pemilik_id', $logedUserId)
-                    ->select('products.id', 'product_categories.nama as category', 'products.kode', 'users.nama as pemilik', 'products.nama', 'products.harga', 'products.tersewakan', 'products.stok', 'products.foto', 'products.deskripsi', 'products.created_at', 'products.updated_at');
+        $products = DB::table('produk')
+                    ->join('kategori_produk', 'produk.category_id', '=', 'kategori_produk.id')
+                    ->join('user', 'produk.pemilik_id', '=', 'user.id')
+                    // ->where('produk.pemilik_id', $logedUserId)
+                    ->select('produk.id', 'kategori_produk.nama as category', 'produk.kode', 'user.nama as pemilik', 'produk.nama', 'produk.harga', 'produk.tersewakan', 'produk.stok', 'produk.foto', 'produk.deskripsi', 'produk.created_at', 'produk.updated_at');
 
         if ($limit && is_numeric($limit)) $products->limit($limit);
 
         if ($logedUserRole !== '1') {
-            $products->where('products.pemilik_id', $logedUserId);
+            $products->where('produk.pemilik_id', $logedUserId);
         }
 
         return response()->json([

@@ -29,7 +29,7 @@ class ProfileController extends Controller
             $request->validate([
                 'nama' => 'required|string',
                 'alamat' => 'nullable|string',
-                'email' => 'required|email|unique:users,email,' . $user->id,
+                'email' => 'required|email|unique:user,email,' . $user->id,
                 'password' => 'nullable|min:6',
                 'foto' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
             ]);

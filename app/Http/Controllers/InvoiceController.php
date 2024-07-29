@@ -19,28 +19,28 @@ class InvoiceController extends Controller
     {
         $id = $request->query('id');
 
-        $data = DB::table('transaction_hdrs')
-                ->join('users', 'transaction_hdrs.user_id', '=', 'users.id')
+        $data = DB::table('transkasi')
+                ->join('user', 'transkasi.user_id', '=', 'user.id')
                 ->select(
-                    'users.nama as customer',
-                    'users.alamat as alamat',
-                    'users.email as email',
-                    'transaction_hdrs.no_transaksi as no_transaksi',
-                    'transaction_hdrs.created_at as tanggal',
-                    'transaction_hdrs.grand_total as grand_total',
+                    'user.nama as customer',
+                    'user.alamat as alamat',
+                    'user.email as email',
+                    'transkasi.no_transaksi as no_transaksi',
+                    'transkasi.created_at as tanggal',
+                    'transkasi.grand_total as grand_total',
                 )
-                ->where('transaction_hdrs.id', $id)
+                ->where('transkasi.id', $id)
                 ->first();
 
-        $transaction_lines = DB::table('transaction_lines')
-                            ->join('products', 'transaction_lines.product_id', '=', 'products.id')
+        $transaction_lines = DB::table('transaksi_detail')
+                            ->join('produk', 'transaksi_detail.product_id', '=', 'produk.id')
                             ->select(
-                                'products.nama as nama_barang',
-                                'products.harga as harga',
-                                'products.kode as kode',
-                                'transaction_lines.sub_total as sub_total',
-                                'transaction_lines.waktu_sewa as waktu_sewa',
-                                'transaction_lines.waktu_pengembalian as waktu_pengembalian',
+                                'produk.nama as nama_barang',
+                                'produk.harga as harga',
+                                'produk.kode as kode',
+                                'transaksi_detail.sub_total as sub_total',
+                                'transaksi_detail.waktu_sewa as waktu_sewa',
+                                'transaksi_detail.waktu_pengembalian as waktu_pengembalian',
                             )
                             ->where('transaction_lines.hdr_id', $id)
                             ->get();

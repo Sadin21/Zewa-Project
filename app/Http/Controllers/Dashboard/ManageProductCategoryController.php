@@ -18,10 +18,10 @@ class ManageProductCategoryController extends Controller
 
     public function getAllData(Request $request): JsonResponse
     {
-        $data = DB::table('product_categories')
-                    ->leftJoin('products', 'products.category_id', '=', 'product_categories.id')
-                    ->select('product_categories.id', 'product_categories.nama', DB::raw('COALESCE(COUNT(products.id), 0) as total'))
-                    ->groupBy('product_categories.id')
+        $data = DB::table('produk_kategori')
+                    ->leftJoin('produk', 'produk.category_id', '=', 'produk_kategori.id')
+                    ->select('produk_kategori.id', 'produk_kategori.nama', DB::raw('COALESCE(COUNT(produk.id), 0) as total'))
+                    ->groupBy('produk_kategori.id')
                     ->get();
 
         return response()->json([

@@ -14,7 +14,7 @@ class ProductCategoryController extends Controller
         $keyword = $request->keyword;
         $nama = $request->nama?? 0;
 
-        $data = DB::table('product_categories')
+        $data = DB::table('kategori_produk')
                         ->select('id', 'nama')
                         ->where(function ($query) use ($nama) {
                             if ($nama) {

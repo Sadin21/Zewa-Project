@@ -20,9 +20,9 @@ class ManageUserController extends Controller
 
     public function getAllData(Request $request): JsonResponse
     {
-        $data = DB::table('users')
-                    ->join('roles', 'users.role_id', '=', 'roles.id')
-                    ->select('users.*', 'roles.name as role')
+        $data = DB::table('user')
+                    ->join('roles', 'user.role_id', '=', 'roles.id')
+                    ->select('user.*', 'roles.name as role')
                     ->get();
 
         return response()->json([
@@ -45,7 +45,7 @@ class ManageUserController extends Controller
             'role_id' => 'required|numeric',
             'nama' => 'required|string',
             'alamat' => 'required|string',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'required|email|unique:user,email',
             'password' => 'required|string',
             'foto' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'foto_ktp' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -105,7 +105,7 @@ class ManageUserController extends Controller
             'role_id' => 'required|numeric',
             'nama' => 'required|string',
             'alamat' => 'required|string',
-            'email' => 'required|email|unique:users,email, ' . $id,
+            'email' => 'required|email|unique:user,email, ' . $id,
             'password' => 'required|string',
             'foto' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'foto_ktp' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',

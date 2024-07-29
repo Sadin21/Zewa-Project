@@ -19,7 +19,7 @@ class AuthController extends Controller
         }
 
         $credentials = $request->validate([
-            'email' => 'required|string|exists:users,email',
+            'email' => 'required|string|exists:user,email',
             'password' => 'required',
         ]);
 
@@ -43,7 +43,7 @@ class AuthController extends Controller
         try {
             $input = $request->validate([
                 'nama' => 'required|string',
-                'email' => 'required|email|unique:users,email',
+                'email' => 'required|email|unique:user,email',
                 'password' => 'required',
             ]);
 

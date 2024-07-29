@@ -21,15 +21,15 @@ class ManageTransactionController extends Controller
         $logedUserId = $request->query('logedUserId');
         $logedUserRole = $request->query('logedUserRole');
 
-        $data = DB::table('transaction_hdrs')
-                    ->join('transaction_lines', 'transaction_hdrs.id', '=', 'transaction_lines.hdr_id')
-                    ->join('products', 'transaction_lines.product_id', '=', 'products.id')
-                    ->join('users', 'transaction_hdrs.user_id', '=', 'users.id')
-                    ->leftJoin('carts', 'transaction_lines.cart_id', '=', 'carts.id')
-                    ->select('products.kode', 'products.nama', 'users.nama as penyewa', 'transaction_lines.alamat', 'transaction_lines.waktu_sewa', 'transaction_lines.waktu_pengembalian', 'transaction_lines.sub_total', 'carts.paket_sewa');
+        $data = DB::table('transaksi')
+                    ->join('transaksi_detail', 'transaksi.id', '=', 'transaksi_detail.hdr_id')
+                    ->join('produk', 'transaksi_detail.product_id', '=', 'produk.id')
+                    ->join('user', 'transaksi.user_id', '=', 'user.id')
+                    ->leftJoin('keranjang', 'transaksi_detail.cart_id', '=', 'keranjang.id')
+                    ->select('produk.kode', 'produk.nama', 'user.nama as penyewa', 'transaksi_detail.alamat', 'transaksi_detail.waktu_sewa', 'transaksi_detail.waktu_pengembalian', 'transaksi_detail.sub_total', 'keranjang.paket_sewa');
 
         if ($logedUserRole !== '1') {
-            $data->where('products.pemilik_id', $logedUserId);
+            $data->where('produk.pemilik_id', $logedUserId);
         }
 
         return response()->json([

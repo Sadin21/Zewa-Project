@@ -13,9 +13,9 @@ class ProductController extends Controller
 {
     public function index(): View
     {
-        $categoryData = DB::table('products')
-            ->join('product_categories', 'products.category_id', '=', 'product_categories.id')
-            ->select('category_id', DB::raw('count(*) as total'), 'product_categories.nama as category')
+        $categoryData = DB::table('produk')
+            ->join('kategori_produk', 'produk.category_id', '=', 'kategori_produk.id')
+            ->select('category_id', DB::raw('count(*) as total'), 'kategori_produk.nama as category')
             ->groupBy('category_id')
             ->get();
 
@@ -31,23 +31,23 @@ class ProductController extends Controller
         $category = $request->category?? 0;
         $pemilik = $request->pemilik?? 0;
 
-        $product = DB::table('products')
-                    ->join('product_categories', 'products.category_id', '=', 'product_categories.id')
-                    ->join('users', 'products.pemilik_id', '=', 'users.id')
-                    ->select('products.id', 'products.nama', 'products.harga', 'products.foto', 'products.stok', 'products.deskripsi', 'products.tersewakan', 'product_categories.nama as category', 'users.nama as pemilik')
+        $product = DB::table('produk')
+                    ->join('kategori_produk', 'produk.category_id', '=', 'kategori_produk.id')
+                    ->join('user', 'produk.pemilik_id', '=', 'user.id')
+                    ->select('produk.id', 'produk.nama', 'produk.harga', 'produk.foto', 'produk.stok', 'produk.deskripsi', 'produk.tersewakan', 'kategori_produk.nama as category', 'user.nama as pemilik')
                     ->where(function ($query) use ($nama) {
                         if ($nama) {
-                            $query->where('products.nama', 'like', '%'.$nama.'%');
+                            $query->where('produk.nama', 'like', '%'.$nama.'%');
                         }
                     })
                     ->orWhere(function ($query) use ($category) {
                         if ($category) {
-                            $query->where('product_categories.nama', 'like', '%'.$category.'%');
+                            $query->where('kategori_produk.nama', 'like', '%'.$category.'%');
                         }
                     })
                     ->orWhere(function ($query) use ($pemilik) {
                         if ($pemilik) {
-                            $query->where('users.nama', 'like', '%'.$pemilik.'%');
+                            $query->where('user.nama', 'like', '%'.$pemilik.'%');
                         }
                     });
 
@@ -64,11 +64,11 @@ class ProductController extends Controller
 
     public function getDetailData($id): View
     {
-        $product = DB::table('products')
-                    ->join('product_categories', 'products.category_id', '=', 'product_categories.id')
-                    ->join('users', 'products.pemilik_id', '=', 'users.id')
-                    ->select('products.id', 'products.nama', 'products.harga', 'products.foto', 'products.stok', 'products.deskripsi', 'products.tersewakan', 'product_categories.nama as category', 'users.nama as pemilik')
-                    ->where('products.id', $id)
+        $product = DB::table('produk')
+                    ->join('kategori_produk', 'produk.category_id', '=', 'kategori_produk.id')
+                    ->join('user', 'produk.pemilik_id', '=', 'user.id')
+                    ->select('produk.id', 'produk.nama', 'produk.harga', 'produk.foto', 'produk.stok', 'produk.deskripsi', 'produk.tersewakan', 'kategori_produk.nama as category', 'user.nama as pemilik')
+                    ->where('produk.id', $id)
                     ->first();
 
         return view('pages.customer-page.product.detail', compact('product'));
@@ -82,7 +82,7 @@ class ProductController extends Controller
             // $search = $request->q;
             $search = 'Kain';
 
-            $data = DB::table('products')
+            $data = DB::table('produk')
                 ->select('id', 'nama')
                 ->where('nama', 'LIKE', "%$search%")
                 ->get();

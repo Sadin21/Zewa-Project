@@ -16,12 +16,12 @@ class CartController extends Controller
 {
     public function index(): View
     {
-        $data = DB::table('carts')
-            ->join('products', 'carts.product_id', '=', 'products.id')
-            ->leftJoin('transaction_lines', 'carts.id', '=', 'transaction_lines.cart_id')
-            ->whereNull('transaction_lines.cart_id')
-            ->where('carts.user_id', '=', Auth::user()->id)
-            ->select('carts.*', 'products.nama', 'products.kode', 'products.foto', 'products.id as productId')
+        $data = DB::table('keranjang')
+            ->join('produk', 'keranjang.product_id', '=', 'produk.id')
+            ->leftJoin('transaksi_detail', 'keranjang.id', '=', 'transaksi_detail.cart_id')
+            ->whereNull('transaksi_detail.cart_id')
+            ->where('keranjang.user_id', '=', Auth::user()->id)
+            ->select('keranjang.*', 'produk.nama', 'produk.kode', 'produk.foto', 'produk.id as productId')
             ->get();
 
         return view('pages.customer-page.cart.index', compact('data'));
@@ -31,8 +31,8 @@ class CartController extends Controller
     {
         $request->validate(
             [
-            'product_id' => 'required|exists:products,id',
-            'user_id' => 'required|exists:users,id',
+            'product_id' => 'required|exists:produk,id',
+            'user_id' => 'required|exists:user,id',
             'waktu_sewa' => 'required|date',
             'paket_sewa' => 'required|numeric',
             'status_ambil' => 'required|string',

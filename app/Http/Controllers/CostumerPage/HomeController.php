@@ -17,9 +17,9 @@ class HomeController extends Controller
     {
         $newProduct = Product::orderBy('created_at', 'desc')->limit(4)->get();
 
-        $totalCategoryProduct = DB::table('products')
-                                    ->join('product_categories', 'products.category_id', '=', 'product_categories.id')
-                                    ->select('category_id', DB::raw('count(*) as total'), 'product_categories.nama as category')
+        $totalCategoryProduct = DB::table('produk')
+                                    ->join('kategori_produk', 'produk.category_id', '=', 'kategori_produk.id')
+                                    ->select('category_id', DB::raw('count(*) as total'), 'kategori_produk.nama as category')
                                     ->groupBy('category_id')
                                     ->get();
 

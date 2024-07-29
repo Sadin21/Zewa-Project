@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class TransactionLine extends Model
 {
     use HasFactory;
+
+    protected $table = 'transaksi_detail';
     protected $fillable = [
         'hdr_id',
         'product_id',

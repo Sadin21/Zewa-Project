@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class TransactionHdr extends Model
 {
     use HasFactory;
+
+    protected $table = 'transaksi';
     protected $fillable = [
         'user_id',
         'no_transaksi',

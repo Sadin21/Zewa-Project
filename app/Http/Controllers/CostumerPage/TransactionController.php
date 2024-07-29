@@ -18,11 +18,11 @@ class TransactionController extends Controller
 
     public function index(Request $request): View | RedirectResponse
     {
-        $data = DB::table('transaction_lines')
-            ->join('transaction_hdrs', 'transaction_lines.hdr_id', '=', 'transaction_hdrs.id')
-            ->join('products', 'transaction_lines.product_id', '=', 'products.id')
-            ->select('transaction_lines.*', 'transaction_hdrs.id as hdr_id', 'transaction_hdrs.no_transaksi', 'products.nama', 'products.kode', 'products.foto')
-            ->where('transaction_hdrs.user_id', Auth::user()->id)
+        $data = DB::table('transaksi_detail')
+            ->join('transaksi', 'transaksi_detail.hdr_id', '=', 'transaksi.id')
+            ->join('produk', 'transaksi_detail.product_id', '=', 'produk.id')
+            ->select('transaksi_detail.*', 'transaksi.id as hdr_id', 'transaksi.no_transaksi', 'produk.nama', 'produk.kode', 'produk.foto')
+            ->where('transaksi.user_id', Auth::user()->id)
             ->get();
 
         return view('pages.customer-page.transaction.index', compact('data'));
