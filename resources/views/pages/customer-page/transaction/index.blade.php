@@ -14,6 +14,8 @@
         </div>
     </div>
 
+    @if ($data != null && count($data) > 0)
+
     <div>
         <table class="table">
             <thead>
@@ -50,6 +52,10 @@
             </tbody>
         </table>
     </div>
+    @else
+    <h5>tidak ada data</h5>
+    @endif
+
 </section>
 @endsection
 
