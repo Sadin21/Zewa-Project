@@ -177,13 +177,13 @@
           </tr>
         </thead>
         <tbody>
-            @foreach ($transaction_lines as $line)
+            @foreach ($transaksi_detail as $detail)
             <tr>
-                <td class="service">{{ $line->nama_barang }}</td>
-                <td class="service">{{ $line->kode }}</td>
-                <td class="unit">{{ $line->waktu_sewa }}</td>
-                <td class="unit">{{ $line->waktu_pengembalian }}</td>
-                <td class="total">{{ $line->harga }}</td>
+                <td class="service">{{ $detail->nama_barang }}</td>
+                <td class="service">{{ $detail->kode }}</td>
+                <td class="unit">{{ $detail->waktu_sewa }}</td>
+                <td class="unit">{{ $detail->waktu_pengembalian }}</td>
+                <td class="total">{{ $detail->harga }}</td>
             </tr>
             @endforeach
             <tr>

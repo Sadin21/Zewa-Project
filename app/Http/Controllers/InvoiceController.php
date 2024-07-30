@@ -19,20 +19,20 @@ class InvoiceController extends Controller
     {
         $id = $request->query('id');
 
-        $data = DB::table('transkasi')
-                ->join('user', 'transkasi.user_id', '=', 'user.id')
+        $data = DB::table('transaksi')
+                ->join('user', 'transaksi.user_id', '=', 'user.id')
                 ->select(
                     'user.nama as customer',
                     'user.alamat as alamat',
                     'user.email as email',
-                    'transkasi.no_transaksi as no_transaksi',
-                    'transkasi.created_at as tanggal',
-                    'transkasi.grand_total as grand_total',
+                    'transaksi.no_transaksi as no_transaksi',
+                    'transaksi.created_at as tanggal',
+                    'transaksi.grand_total as grand_total',
                 )
-                ->where('transkasi.id', $id)
+                ->where('transaksi.id', $id)
                 ->first();
 
-        $transaction_lines = DB::table('transaksi_detail')
+        $transaksi_detail = DB::table('transaksi_detail')
                             ->join('produk', 'transaksi_detail.product_id', '=', 'produk.id')
                             ->select(
                                 'produk.nama as nama_barang',
@@ -42,12 +42,12 @@ class InvoiceController extends Controller
                                 'transaksi_detail.waktu_sewa as waktu_sewa',
                                 'transaksi_detail.waktu_pengembalian as waktu_pengembalian',
                             )
-                            ->where('transaction_lines.hdr_id', $id)
+                            ->where('transaksi_detail.hdr_id', $id)
                             ->get();
 
-        // return view('pages.invoice.index', compact('data', 'transaction_lines'));
+        // return view('pages.invoice.index', compact('data', 'transaksi_detail'));
 
-        $pdf = PDF::loadView('pages.invoice.index', compact('data', 'transaction_lines'));
+        $pdf = PDF::loadView('pages.invoice.index', compact('data', 'transaksi_detail'));
         return $pdf->download('struk penyewaan.pdf');
     }
 }
