@@ -42,7 +42,7 @@
                             <input name="password" type="password" class="form-control" id="inputPassword" aria-describedby="emailHelp">
                         </div>
                         <div class="text-center">
-                            <button type="submit" class="btn bg-medium-green poppins-medium text-white fs-14 w-100 py-2" style="background-color: #00A3A8;">Login</button>
+                            <button type="submit" class="btn bg-medium-green poppins-medium text-white fs-14 w-100 py-2" style="background-color: #00A3A8;">Daftar</button>
                             <h6 class="poppins-medium dark-green fs-14 mt-3">Sudah memiliki akun? <span><a href="{{ route('auth.login') }}" class="medium-green" style="text-decoration: none">Login</a></span> </h6>
                         </div>
                     </form>
