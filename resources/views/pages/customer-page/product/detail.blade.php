@@ -26,6 +26,12 @@
                     <i class="fa-brands fa-instagram fs-18"></i>
                 </a>
             </div>
+            <div class="border border-2 p-2 w-100 mt-4 d-flex gap-4">
+                <p class="mb-0 poppins-medium fs-14">Tanya seputar produk</p>
+                <a href="https://wa.me/6285851041585">
+                    <i class="fa-brands fa-whatsapp fs-18"></i>
+                </a>
+            </div>
         </div>
         <div class="col ms-4 ps-4">
             <div style="width: 80%" class="pb-4 border-bottom">
