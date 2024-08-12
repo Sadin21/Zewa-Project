@@ -111,7 +111,7 @@
         <h3 class="poppins-semibold dark-green">Tertarik Menyewakan Produk Anda?</h3>
         <div class="d-flex gap-3 justify-content-center">
             <i class="fa-brands fa-whatsapp fs-22"></i>
-            <h5 class="poppins-regular mb-0">0858 5104 1585</h5>
+            <h5 class="poppins-regular mb-0"><a href="https://wa.me/6285851041585">0858 5104 1585</a></h5>
         </div>
     </div>
 </section>
